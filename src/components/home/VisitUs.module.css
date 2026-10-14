@@ -1,0 +1,57 @@
+.section {
+  background: var(--color-accent);
+  color: var(--color-ivory);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-10);
+  padding-block: var(--space-16);
+}
+
+.copy {
+  display: grid;
+  justify-items: start;
+  align-content: center;
+  gap: var(--space-6);
+}
+
+.title {
+  max-width: 12ch;
+  font-size: var(--text-2xl);
+}
+
+.text {
+  max-width: 42ch;
+  opacity: 0.85;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.button {
+  border-color: var(--color-ivory);
+  color: var(--color-ivory);
+}
+
+.button:hover {
+  background: var(--color-ivory);
+  color: var(--color-accent);
+}
+
+.media img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-24);
+    padding-block: var(--space-24);
+  }
+}

@@ -1,0 +1,59 @@
+.head {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-10);
+  text-align: center;
+}
+
+/* Centra también el filete corto de la etiqueta. */
+.head .eyebrow::after {
+  margin-inline: auto;
+}
+
+/* Mismo estilo de título que "Color con carácter". */
+.title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-10);
+}
+
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 72%;
+  gap: var(--space-4);
+  /* Se sale del contenedor para que las tarjetas lleguen al borde de la pantalla. */
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .rail {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+}

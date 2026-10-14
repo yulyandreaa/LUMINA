@@ -1,0 +1,44 @@
+.grid {
+  display: grid;
+  gap: var(--space-10);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.media {
+  display: block;
+  overflow: hidden;
+}
+
+.media img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.card:hover img {
+  transform: scale(1.04);
+}
+
+.title {
+  font-size: var(--text-lg);
+}
+
+.card:hover .title {
+  color: var(--color-accent);
+}
+
+.excerpt {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+}

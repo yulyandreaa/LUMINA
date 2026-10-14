@@ -1,0 +1,122 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: color-mix(in srgb, var(--color-wine) 45%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.overlay[data-open='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  z-index: var(--z-drawer);
+  display: flex;
+  flex-direction: column;
+  width: min(26rem, 88vw);
+  overflow-y: auto;
+  background: var(--color-bg);
+  transform: translateX(-100%);
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.drawer[data-open='true'] {
+  transform: none;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding-inline: var(--gutter);
+  border-bottom: var(--border-hairline);
+}
+
+.logo {
+  width: 6.5rem;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: calc(var(--space-3) * -1);
+}
+
+.item {
+  border-bottom: var(--border-hairline);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-5) var(--gutter);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Acordeón animado: grid-template-rows 0fr → 1fr anima la altura sin medirla. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-out);
+}
+
+.panel[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.panelInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  min-height: 0;
+  overflow: hidden;
+  padding-inline: var(--gutter);
+}
+
+.panel[data-open='true'] .panelInner {
+  padding-bottom: var(--space-6);
+}
+
+.groupTitle {
+  margin-bottom: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.subLink {
+  display: block;
+  padding-block: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.footer {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding: var(--space-8) var(--gutter);
+  background: var(--color-bg-alt);
+}
+
+.footerLink {
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

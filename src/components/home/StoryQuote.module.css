@@ -1,0 +1,80 @@
+/* A sangre: sin .container, ocupa todo el ancho de la pantalla. */
+.section {
+  display: grid;
+  margin-block: var(--space-16);
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+  /* Las gafas van al centro de la foto: así se ven completas en escritorio y en móvil. */
+  object-position: 50% 50%;
+}
+
+/* Panel de color: rosa empolvado de LUMINA (en la referencia, el amarillo de Moscot). */
+.panel {
+  display: grid;
+  place-items: center;
+  padding: var(--space-16) var(--gutter);
+  background: var(--color-powder);
+  color: var(--color-wine);
+}
+
+.content {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-8);
+  max-width: 34rem;
+  text-align: center;
+}
+
+.seal {
+  width: 6.5rem;
+  animation: spin 40s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.quote {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+}
+
+.quote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 0.9rem + 1vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.signature {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.author {
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    grid-template-columns: 1fr 1fr;
+    min-height: 38rem;
+  }
+
+  .media img {
+    min-height: 0;
+  }
+}

@@ -1,0 +1,80 @@
+.section {
+  background: var(--color-bg-alt);
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.inner > :first-child::after {
+  margin-inline: auto;
+}
+
+.title {
+  color: var(--color-accent);
+  font-size: var(--text-2xl);
+}
+
+.text {
+  max-width: 44ch;
+  color: var(--color-text-muted);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+  width: min(100%, 34rem);
+  margin-top: var(--space-4);
+  text-align: left;
+}
+
+.row {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.input {
+  min-height: 2.75rem;
+  padding-inline: var(--space-5);
+  border: 1px solid var(--color-text);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.consent {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  font-size: var(--text-xs);
+}
+
+.consent input {
+  margin-top: 0.15rem;
+  accent-color: var(--color-accent);
+}
+
+.message {
+  min-height: 1.5em;
+  font-size: var(--text-xs);
+}
+
+.message[data-status='error'] {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: 1fr auto;
+  }
+}

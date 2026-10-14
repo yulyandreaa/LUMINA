@@ -1,0 +1,99 @@
+.head {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Pestañas: fila centrada en escritorio; en móvil se desliza en horizontal. */
+.tabs {
+  display: flex;
+  gap: var(--space-3);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px; /* deja ver el anillo de foco */
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: none;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 3px;
+  background: var(--color-bg-alt);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast),
+    color var(--duration-fast);
+}
+
+.tab:hover {
+  background: var(--color-powder);
+}
+
+/* Pestaña activa: borgoña de LUMINA (en la referencia es el amarillo de Moscot). */
+.tab[aria-selected='true'] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 72%;
+  gap: var(--space-4);
+  margin-inline: calc(var(--gutter) * -1);
+  padding-inline: var(--gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.grid::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  scroll-snap-align: start;
+  animation: fade var(--duration-base) var(--ease-out);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (min-width: 768px) {
+  .tabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+}

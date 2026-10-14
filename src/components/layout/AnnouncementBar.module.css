@@ -1,0 +1,58 @@
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  height: 2.25rem;
+  padding-inline: var(--gutter);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.viewport {
+  position: relative;
+  display: grid;
+  flex: 0 1 32rem;
+  text-align: center;
+}
+
+/* Todos los mensajes ocupan la misma celda de la rejilla y se cruzan con fundido. */
+.message {
+  grid-area: 1 / 1;
+  font-size: var(--text-2xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.message[data-active='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  opacity: 0.8;
+}
+
+.arrow:hover {
+  opacity: 1;
+}
+
+.flip {
+  transform: scaleX(-1);
+}
+
+@media (min-width: 768px) {
+  .message {
+    font-size: var(--text-xs);
+  }
+}

@@ -1,0 +1,127 @@
+.hero {
+  position: relative;
+  display: grid;
+  height: min(82svh, 48rem);
+  min-height: 30rem;
+  overflow: hidden;
+  background: var(--color-wine);
+  color: var(--color-ivory);
+}
+
+/* Todas las diapositivas en la misma celda; se cruzan con fundido. */
+.slide {
+  position: relative;
+  grid-area: 1 / 1;
+  display: grid;
+  align-items: end;
+  opacity: 0;
+  transition: opacity 900ms var(--ease-out);
+}
+
+.slide[data-active='true'] {
+  opacity: 1;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  transition: transform 6s linear;
+}
+
+/* Zoom lento (efecto Ken Burns) mientras la diapositiva está activa. */
+.slide[data-active='true'] .image {
+  transform: scale(1);
+}
+
+/* Degradado para que el texto sea legible sobre cualquier foto. */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(50 27 29 / 0.75), rgb(50 27 29 / 0) 60%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  padding-bottom: var(--space-24);
+}
+
+.title {
+  max-width: 14ch;
+  font-size: var(--text-3xl);
+  font-weight: 600;
+}
+
+.cta {
+  border-color: var(--color-ivory);
+  color: var(--color-ivory);
+}
+
+.cta:hover {
+  background: var(--color-ivory);
+  color: var(--color-accent);
+}
+
+.controls {
+  position: absolute;
+  inset-inline: 0;
+  bottom: var(--space-8);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dot {
+  position: relative;
+  width: 2rem;
+  height: 2px;
+  background: rgb(247 240 234 / 0.4);
+  transition: background-color var(--duration-base);
+}
+
+.dot::after {
+  content: '';
+  position: absolute;
+  inset: -0.75rem 0;
+}
+
+.dot[aria-current='true'] {
+  background: var(--color-ivory);
+}
+
+.arrows {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgb(247 240 234 / 0.5);
+  border-radius: 50%;
+  transition: background-color var(--duration-fast);
+}
+
+.arrow:hover {
+  background: rgb(247 240 234 / 0.15);
+}
+
+.flip {
+  transform: scaleX(-1);
+}

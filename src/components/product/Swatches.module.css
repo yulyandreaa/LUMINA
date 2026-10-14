@@ -1,0 +1,41 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.swatch {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  outline-offset: 2px;
+  transition: box-shadow var(--duration-fast);
+}
+
+/* Anillo de selección: borde marfil + anillo borgoña. */
+.swatch[aria-checked='true'] {
+  box-shadow:
+    0 0 0 2px var(--color-bg),
+    0 0 0 3px var(--color-accent);
+}
+
+.sm {
+  --size: 1.25rem;
+}
+
+.md {
+  --size: 1.75rem;
+}
+
+/* Área táctil mínima aunque la muestra se vea pequeña. */
+.sm .swatch {
+  position: relative;
+}
+
+.sm .swatch::after {
+  content: '';
+  position: absolute;
+  inset: -0.35rem;
+}

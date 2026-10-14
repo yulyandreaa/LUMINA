@@ -1,0 +1,45 @@
+/* A sangre: franja borgoña de borde a borde. */
+.marquee {
+  overflow: hidden;
+  padding-block: var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 40s linear infinite;
+}
+
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+
+.group {
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* Mismo lenguaje que las etiquetas de la página (Eyebrow): Inter pequeña, mayúsculas espaciadas. */
+.item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.separator {
+  margin-inline: var(--space-8);
+  color: var(--color-powder);
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}

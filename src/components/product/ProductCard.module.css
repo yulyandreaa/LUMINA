@@ -1,0 +1,116 @@
+.card {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--color-bg-alt);
+}
+
+/* Ambas vistas ocupan la misma celda; la segunda aparece al pasar el ratón. */
+.primary,
+.secondary {
+  grid-area: 1 / 1;
+  width: 78%;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.secondary {
+  opacity: 0;
+}
+
+.media:hover .primary,
+.media:focus-visible .primary {
+  opacity: 0;
+}
+
+.media:hover .secondary,
+.media:focus-visible .secondary {
+  opacity: 1;
+}
+
+/* Foto real del color: llena la tarjeta y se acerca un poco al pasar el ratón. */
+.photo {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.media:hover .photo,
+.media:focus-visible .photo {
+  transform: scale(1.04);
+}
+
+.badge {
+  position: absolute;
+  top: var(--space-3);
+  z-index: 1;
+  padding: 0.2rem var(--space-3);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Etiqueta rectangular oscura, como "NEW" / "NEW COLOR" en la referencia. */
+.badge {
+  left: var(--space-3);
+  border-radius: 3px;
+  background: var(--color-wine);
+  color: var(--color-ivory);
+}
+
+/* "Elige opciones": sube desde abajo al pasar el ratón (solo en dispositivos con hover). */
+.quick {
+  position: absolute;
+  inset-inline: var(--space-3);
+  bottom: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .media:hover .quick,
+  .media:focus-visible .quick {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.info {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  text-align: center;
+}
+
+.name {
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.price {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+}

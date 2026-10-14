@@ -1,0 +1,92 @@
+/*
+ * Tokens de diseño de LUMINA.
+ * Única fuente de verdad para color, tipografía, espaciado y movimiento.
+ * Los componentes NUNCA usan valores sueltos (#861F26, 16px…): usan estas variables.
+ *
+ * Medidas estructurales tomadas de la referencia (moscot.com):
+ * contenedor 1480px, breakpoints 768/1024, rejilla de 4px, transiciones 400–500ms.
+ */
+:root {
+  /* — Color: paleta de marca — */
+  --color-burgundy: #861f26;
+  --color-ivory: #f7f0ea;
+  --color-wine: #321b1d;
+  --color-powder: #d7a6a0;
+  --color-sand: #e8ddd4;
+
+  /* — Color: roles (lo que usan los componentes) — */
+  --color-bg: var(--color-ivory);
+  --color-bg-alt: var(--color-sand);
+  --color-text: var(--color-wine);
+  --color-text-muted: color-mix(in srgb, var(--color-wine) 74%, var(--color-ivory)); /* ≥4.5:1 sobre marfil y arena (WCAG AA) */
+  --color-accent: var(--color-burgundy);
+  --color-on-accent: var(--color-ivory);
+  --color-border: color-mix(in srgb, var(--color-wine) 18%, transparent);
+  --color-focus: var(--color-burgundy);
+
+  /* — Tipografía — */
+  --font-display: 'Syne', 'Helvetica Neue', Arial, sans-serif;
+  --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Acento manuscrito SOLO para anotaciones (como las de la referencia). */
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;
+
+  --text-2xs: 0.625rem; /* 10px */
+  --text-xs: 0.75rem;   /* 12px — tamaño dominante en la referencia */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-md: 1rem;      /* 16px */
+  --text-lg: 1.25rem;   /* 20px */
+  --text-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --text-2xl: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+  --text-3xl: clamp(2.75rem, 1.6rem + 5vw, 6rem);
+
+  --tracking-label: 0.2em; /* etiquetas en mayúsculas espaciadas */
+  --leading-tight: 1.05;
+  --leading-body: 1.6;
+
+  /* — Espaciado (rejilla de 4px) — */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* — Layout — */
+  --page-width: 1480px;
+  --gutter: var(--space-4);
+  --header-height: 4rem;
+
+  /* — Forma — */
+  --radius-none: 0;      /* contenedores e imágenes (como la referencia) */
+  --radius-pill: 999px;  /* botones (identidad LUMINA) */
+  --border-hairline: 1px solid var(--color-border);
+
+  /* — Movimiento — */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 200ms;
+  --duration-base: 400ms;
+  --duration-slow: 500ms;
+
+  /* — Capas — */
+  --z-header: 50;
+  --z-overlay: 90;
+  --z-drawer: 100;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: var(--space-10);
+    --header-height: 4.5rem;
+  }
+}

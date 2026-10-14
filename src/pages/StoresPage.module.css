@@ -1,0 +1,85 @@
+.page {
+  display: grid;
+  gap: var(--space-12);
+  padding-block: var(--space-16) var(--space-24);
+}
+
+.head {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+}
+
+.title {
+  color: var(--color-accent);
+  font-size: var(--text-2xl);
+}
+
+.intro {
+  max-width: 52ch;
+  font-size: var(--text-md);
+}
+
+/* Móvil: una columna · desde tableta: tres, como en la referencia. */
+.grid {
+  display: grid;
+  gap: var(--space-12);
+}
+
+.card {
+  display: grid;
+  align-content: start;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: var(--space-6);
+}
+
+/* Ciudad con una línea fina debajo que separa la foto de los datos. */
+.city {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-wine);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+}
+
+.name {
+  margin-block: var(--space-5) var(--space-4);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.details {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.details a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.pending {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.links {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+  }
+}
