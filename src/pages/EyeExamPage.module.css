@@ -1,0 +1,261 @@
+/*
+ * Diagramación "formulario arriba":
+ * 1. Bloque superior en arena: texto a la izquierda, formulario en un recuadro marfil a la derecha.
+ * 2. Debajo, secciones de ancho completo con encabezado arriba: qué incluye (4 columnas),
+ *    cómo funciona (3 pasos) y preguntas frecuentes.
+ */
+
+/* — Bloque superior — */
+.top {
+  background: var(--color-bg-alt);
+}
+
+.topGrid {
+  display: grid;
+  gap: var(--space-10);
+  padding-block: var(--space-12) var(--space-16);
+}
+
+.topCopy {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: var(--space-6);
+}
+
+.title {
+  color: var(--color-accent);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+}
+
+.intro {
+  max-width: 38ch;
+  font-size: var(--text-lg);
+  line-height: 1.45;
+}
+
+.facts {
+  display: grid;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 26rem;
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-wine);
+  font-size: var(--text-sm);
+}
+
+.facts dt {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+/* Recuadro del formulario */
+.panel {
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+  padding: var(--space-6);
+  background: var(--color-bg);
+}
+
+.panelTitle {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-lg);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.row {
+  display: grid;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.check input {
+  margin-top: 0.1rem;
+  accent-color: var(--color-accent);
+}
+
+.check a {
+  text-decoration: underline;
+}
+
+.error {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.submit {
+  justify-self: start;
+  margin-top: var(--space-2);
+}
+
+.confirmation {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+}
+
+.confirmTitle {
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.summary dt {
+  font-weight: 600;
+}
+
+.summary dd {
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.pending {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-style: italic;
+}
+
+/* — Secciones inferiores — */
+.section {
+  display: grid;
+  gap: var(--space-10);
+  padding-block: var(--space-16) 0;
+}
+
+.head {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+
+.itemTitle {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.itemText {
+  font-size: var(--text-sm);
+}
+
+.includes,
+.steps {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.include {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-wine);
+}
+
+.number {
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+}
+
+.stepNumber {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-family: var(--font-display);
+}
+
+.faq {
+  padding-bottom: var(--space-24);
+}
+
+.faq > :last-child {
+  max-width: 56rem;
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .panel {
+    padding: var(--space-10);
+  }
+
+  .includes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .section {
+    padding-top: var(--space-24);
+  }
+}
+
+@media (min-width: 1024px) {
+  .topGrid {
+    grid-template-columns: 5fr 6fr;
+    gap: var(--space-16);
+    padding-block: var(--space-16) var(--space-24);
+  }
+
+  .topCopy {
+    padding-top: var(--space-6);
+  }
+
+  .includes {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

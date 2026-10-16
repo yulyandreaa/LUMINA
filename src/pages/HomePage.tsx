@@ -12,7 +12,7 @@ import { Newsletter } from '../components/home/Newsletter';
 import { getProductBySlug, getProductsByCategory, products } from '../data/products';
 import {
   colorTabs,
-  featuredAnnotations,
+  featuredSlides,
   featuredStory,
   heroSlides,
   journalPosts,
@@ -32,7 +32,11 @@ export function HomePage() {
     <>
       <HeroSlideshow slides={heroSlides} />
       <ColorTabs title="Color con carácter" tabs={colorTabs} products={products} />
-      <FeaturedProduct product={featured} story={featuredStory} annotations={featuredAnnotations} />
+      <FeaturedProduct
+        product={featured}
+        story={featuredStory}
+        slides={featuredSlides}
+      />
       <Marquee items={['Ver más allá', 'Diseñado para ti', 'Una nueva forma de mirar']} />
       <PromoGrid tiles={promoTiles} />
       <StoryQuote
@@ -42,7 +46,7 @@ export function HomePage() {
         author="Equipo LUMINA"
       />
       <ProductRail
-        eyebrow="Gafas de sol · Ficticio"
+        eyebrow="Gafas de sol"
         title="Para los días de luz"
         products={getProductsByCategory('gafas-de-sol')}
         viewAll={{ label: 'Ver todas las gafas de sol', to: '/gafas-de-sol' }}

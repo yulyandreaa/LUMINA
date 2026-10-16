@@ -1,0 +1,35 @@
+.button {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  color: var(--color-wine);
+  transition:
+    color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.button:hover {
+  color: var(--color-accent);
+}
+
+.button:active {
+  transform: scale(0.9);
+}
+
+/* Guardado: corazón relleno en borgoña con un pequeño latido */
+.button[aria-pressed='true'] {
+  color: var(--color-accent);
+}
+
+.button[aria-pressed='true'] svg {
+  fill: currentColor;
+  animation: beat var(--duration-base) var(--ease-out);
+}
+
+@keyframes beat {
+  50% {
+    transform: scale(1.2);
+  }
+}

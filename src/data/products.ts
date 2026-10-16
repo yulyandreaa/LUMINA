@@ -1,4 +1,5 @@
 import type { ColorVariant, Product } from '../types/product';
+import { applyOverrides } from '../admin/catalogOverrides';
 
 /*
  * ⚠️ CATÁLOGO FICTICIO.
@@ -23,7 +24,8 @@ const photo = (color: ColorVariant, slug: string): ColorVariant => ({
   image: `/products/${slug}-${color.id}.jpg`,
 });
 
-export const products: Product[] = [
+/** Catálogo base (el que usa el servidor de pagos). */
+export const baseProducts: Product[] = [
   {
     id: 'p-aura',
     slug: 'aura',
@@ -142,6 +144,12 @@ export const products: Product[] = [
     fictional: true,
   },
 ];
+
+/** Catálogo con los cambios del panel (precio, etiquetas, inventario), incluidos los ocultos. */
+export const allProducts = applyOverrides(baseProducts);
+
+/** Lo que ve la tienda: sin productos ocultos. */
+export const products = allProducts.filter((p) => !p.hidden);
 
 export const getProductsByCategory = (category: Product['category']) =>
   products.filter((p) => p.category === category);

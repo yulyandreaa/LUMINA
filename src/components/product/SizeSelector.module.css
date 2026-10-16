@@ -26,6 +26,12 @@
   color: var(--color-on-accent);
 }
 
+.option[data-sold-out='true'] .number,
+.option[data-sold-out='true'] .label {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
 .list[aria-invalid='true'] .option {
   border-color: var(--color-accent);
 }

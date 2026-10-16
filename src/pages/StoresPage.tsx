@@ -7,7 +7,7 @@ import styles from './StoresPage.module.css';
 /*
  * Tiendas (como la página de tiendas de la referencia):
  * rejilla de 3 tarjetas · foto de fachada · ciudad · línea · nombre · datos · enlaces.
- * Los datos que faltan se muestran como "pendiente", nunca inventados.
+ * Sin dirección no se muestra esa línea; teléfono/horario faltantes se muestran como "pendiente", nunca inventados.
  */
 export function StoresPage() {
   usePageTitle('Tiendas');
@@ -27,12 +27,12 @@ export function StoresPage() {
             <p className={styles.city}>{s.city}</p>
             <h2 className={styles.name}>{s.name}</h2>
             <div className={styles.details}>
-              <p>{s.address ?? <Pending>Dirección</Pending>}</p>
+              {s.address && <p>{s.address}</p>}
               <p>{s.phone ? <a href={`tel:${s.phone.replace(/\D/g, '')}`}>{s.phone}</a> : <Pending>Teléfono</Pending>}</p>
-              <p>{s.hours ?? <Pending>Horario</Pending>}</p>
+              <p>{s.hours ? `Horario: ${s.hours}` : <Pending>Horario</Pending>}</p>
             </div>
             <div className={styles.links}>
-              <Link to="/examen-visual" className="text-link">
+              <Link to={`/examen-visual?tienda=${s.id}#agendar`} className="text-link">
                 Agenda tu examen visual
               </Link>
               <Link to="/contacto" className="text-link">

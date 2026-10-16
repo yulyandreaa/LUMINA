@@ -5,13 +5,19 @@ import './styles/tokens.css';
 import './styles/base.css';
 import App from './App';
 import { CartProvider } from './cart/CartProvider';
+import { AuthProvider } from './auth/AuthProvider';
+import { AccountDataProvider } from './auth/AccountDataProvider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <AuthProvider>
+        <AccountDataProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </AccountDataProvider>
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>,
 );

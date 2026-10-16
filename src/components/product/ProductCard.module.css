@@ -1,6 +1,15 @@
 .card {
+  position: relative;
   display: grid;
   gap: var(--space-3);
+}
+
+/* Corazón sobre la esquina superior derecha de la imagen */
+.favorite {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 2;
 }
 
 .media {

@@ -11,9 +11,11 @@ interface SizeSelectorProps {
   selected: FrameSize | null;
   onSelect: (size: FrameSize) => void;
   error?: string;
+  /** Tallas agotadas en el color elegido: se pueden elegir, pero se ven tachadas. */
+  soldOut?: FrameSize[];
 }
 
-export function SizeSelector({ sizes, selected, onSelect, error }: SizeSelectorProps) {
+export function SizeSelector({ sizes, selected, onSelect, error, soldOut = [] }: SizeSelectorProps) {
   return (
     <div>
       <div
@@ -32,6 +34,8 @@ export function SizeSelector({ sizes, selected, onSelect, error }: SizeSelectorP
               role="radio"
               aria-checked={selected === id}
               className={styles.option}
+              data-sold-out={soldOut.includes(id)}
+              aria-label={soldOut.includes(id) ? `${s.lensWidth} ${s.label}, agotada` : undefined}
               onClick={() => onSelect(id)}
             >
               <span className={styles.number}>{s.lensWidth}</span>

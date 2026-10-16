@@ -2,7 +2,7 @@ import type { HeroSlide } from '../components/home/HeroSlideshow';
 import type { ColorTab } from '../components/home/ColorTabs';
 import type { PromoTile } from '../components/home/PromoGrid';
 import type { JournalPost } from '../components/home/Journal';
-import type { Annotation } from '../components/home/FeaturedProduct';
+import type { FeaturedSlide } from '../components/home/FeaturedProduct';
 import heroEditorial from '../assets/photos/hero-editorial.jpg';
 import heroArcos from '../assets/photos/hero-arcos.jpg';
 import heroGafasPiedra from '../assets/photos/hero-gafas-piedra.jpg';
@@ -56,12 +56,19 @@ export const colorTabs: ColorTab[] = [
 
 /* Producto protagonista. ⚠️ Texto y detalles FICTICIOS, pendientes de LUMINA. */
 export const featuredStory =
-  'LUMINA es una óptica contemporánea que entiende las gafas como una forma de mirar y de ser mirada. AURA es nuestra montura redonda esencial: acetato pulido, remaches con el destello de la marca y un puente pensado para todos los rostros. Una pieza para todos los días que nunca pasa de moda.';
+  'Diseño atemporal con un carácter contemporáneo. Acetato pulido, remaches con el destello perfecto y una silueta que te acompaña siempre.';
 
-export const featuredAnnotations: Annotation[] = [
-  { text: 'Remaches destello', top: '20%', left: '22%' },
-  { text: 'Acetato pulido a mano', top: '22%', left: '80%' },
-  { text: 'Puente cerradura', top: '80%', left: '50%' },
+/*
+ * Carrusel de AURA: los 4 paneles del diseño "Banner editorial de gafas AURA artesanales" (LUMINA),
+ * tal cual, con sus notas manuscritas. Se borró solo el texto horneado de la izquierda (va en HTML),
+ * la zona de la montura usa la ampliación 4x ya hecha con Magnific (mismo color) y se extendieron
+ * con IA hacia la derecha (fondo y final de la patilla/lente); la parte original quedó intacta.
+ */
+export const featuredSlides: FeaturedSlide[] = [
+  { src: '/featured/aura-1.jpg', alt: 'AURA borgoña sobre piedra: acetato pulido a mano, puente cerradura y remaches con destello' },
+  { src: '/featured/aura-2.jpg', alt: 'Detalle de la bisagra de AURA con remache dorado' },
+  { src: '/featured/aura-3.jpg', alt: 'AURA borgoña de perfil, con la patilla en primer plano' },
+  { src: '/featured/aura-4.jpg', alt: 'Detalle del puente cerradura de AURA' },
 ];
 
 export const promoTiles: PromoTile[] = [
@@ -75,19 +82,19 @@ export const journalPosts: JournalPost[] = [
     title: 'Cómo elegir la talla de tu montura',
     excerpt: 'Ancho de lente, puente y patilla: lo que significan los números.',
     image: diarioTalla,
-    to: '/talla-y-ajuste',
+    to: '/diario/como-elegir-la-talla-de-tu-montura',
   },
   {
     title: 'El color como forma de mirar',
     excerpt: 'Por qué el borgoña se convirtió en nuestro color firma.',
     image: diarioColor,
-    to: '/diario',
+    to: '/diario/el-color-como-forma-de-mirar',
   },
   {
     title: 'Cuidar tus gafas, paso a paso',
     excerpt: 'Limpieza, estuche y pequeños gestos que alargan su vida.',
     image: diarioCuidado,
-    to: '/cuidado',
+    to: '/diario/cuidar-tus-gafas-paso-a-paso',
   },
 ];
 

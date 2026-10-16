@@ -1,0 +1,635 @@
+/*
+ * Panel "Mi cuenta".
+ * Móvil: saludo arriba + pestañas deslizables. Escritorio: menú lateral fijo (3/12) + contenido (9/12).
+ * Tarjetas sin sombras, con filetes finos, como el resto de LUMINA.
+ */
+.layout {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-10) var(--space-24);
+}
+
+/* — Menú lateral — */
+.sidebar {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.hello {
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.addName {
+  justify-self: start;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.nav {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--color-border);
+  scrollbar-width: none;
+}
+
+.navLink {
+  flex: none;
+  padding-block: var(--space-3);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  transition: color var(--duration-fast);
+}
+
+.navLink:hover {
+  color: var(--color-text);
+}
+
+.current {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.signOut {
+  justify-self: start;
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.signOut:hover {
+  color: var(--color-accent);
+}
+
+/* — Contenido — */
+.content {
+  display: grid;
+  align-content: start;
+  gap: var(--space-8);
+  min-width: 0;
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-wine);
+}
+
+.sectionTitle {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+
+.subTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.demoNote {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-style: italic;
+}
+
+.muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  background: #fffaf6;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge {
+  flex: none;
+  padding: 0.2rem var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-alt);
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.badge[data-status='cancelado'] {
+  background: transparent;
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+/* Estado de las citas (lo pone la tienda desde el panel) */
+.badge[data-booking='confirmada'] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.badge[data-rescheduled='true'] {
+  background: var(--color-powder);
+}
+
+.badge[data-booking='cancelada'],
+.badge[data-booking='no-asistio'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.struck {
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+.statusNote {
+  margin-top: var(--space-1);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.badge[data-status='enviado'] {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+/* — Mis pedidos: lista compacta desplegable (la línea del título hace de borde superior) — */
+.ordersHead {
+  display: none;
+}
+
+.order {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Móvil: número y estado arriba, fecha y total abajo */
+.orderRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-template-areas:
+    'id status toggle'
+    'date total toggle';
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-5);
+  cursor: pointer;
+  list-style: none;
+}
+
+.orderRow::-webkit-details-marker {
+  display: none;
+}
+
+.orderRow:hover .orderId {
+  color: var(--color-accent);
+}
+
+.orderId {
+  grid-area: id;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transition: color var(--duration-fast);
+}
+
+.orderDate {
+  grid-area: date;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.orderStatus {
+  grid-area: status;
+  justify-self: end;
+}
+
+.orderTotal {
+  grid-area: total;
+  justify-self: end;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* Signo + que gira a × al abrir */
+.orderToggle {
+  grid-area: toggle;
+  position: relative;
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.orderToggle::before,
+.orderToggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+}
+
+.orderToggle::after {
+  transform: rotate(90deg);
+}
+
+.order[open] .orderToggle {
+  transform: rotate(45deg);
+}
+
+.orderDetail {
+  display: grid;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background: #fffaf6;
+}
+
+/* Línea de tiempo del pedido: puntos unidos por una línea; los alcanzados en borgoña */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.timeline li::before {
+  content: '';
+  z-index: 1;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 50%;
+  background: #fffaf6;
+}
+
+.timeline li + li::after {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  right: 50%;
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.timeline li[data-done='true'] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.timeline li[data-done='true']::before {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.timeline li[data-done='true'] + li[data-done='true']::after {
+  background: var(--color-accent);
+}
+
+.items {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 4rem 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.thumb {
+  width: 4rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: var(--color-bg-alt);
+}
+
+.itemName {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.itemPrice {
+  font-size: var(--text-sm);
+}
+
+/* — Citas — */
+.appointment {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.appointment[data-past='true'] {
+  opacity: 0.6;
+}
+
+.calendar {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  padding-block: var(--space-2);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  text-transform: uppercase;
+}
+
+.calendar span {
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.calendar strong {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1;
+}
+
+.appointmentInfo {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.appointmentInfo p:nth-child(2)::first-letter {
+  text-transform: uppercase;
+}
+
+.appointmentActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  grid-column: 1 / -1;
+}
+
+.danger {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  padding: var(--space-8);
+  background: var(--color-bg-alt);
+}
+
+.emptyTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+/* — Favoritos — */
+.favorites {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* — Datos y direcciones — */
+.block {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.blockHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.row {
+  display: grid;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.saved {
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.check input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-accent);
+}
+
+.addresses {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.address {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  background: #fffaf6;
+  font-size: var(--text-sm);
+}
+
+.address .cardTitle {
+  margin-bottom: var(--space-2);
+}
+
+.addressActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.addressForm {
+  padding: var(--space-5);
+  border: 1px solid var(--color-accent);
+  background: #fffaf6;
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .addresses {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .favorites {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Escritorio y tableta: columnas de tabla con encabezado */
+  .ordersHead,
+  .orderRow {
+    display: grid;
+    grid-template-columns: 1.2fr 1.4fr 1fr 1fr 1.5rem;
+    grid-template-areas: 'id date status total toggle';
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .ordersHead {
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .ordersHead span:nth-child(4) {
+    text-align: right;
+  }
+
+  .orderDate {
+    font-size: var(--text-sm);
+  }
+
+  .orderStatus {
+    justify-self: start;
+  }
+
+  .addressWide {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    padding: var(--space-6);
+  }
+
+  .appointment {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .appointmentActions {
+    grid-column: auto;
+    justify-content: end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 3fr 9fr;
+    gap: var(--space-16);
+    padding-top: var(--space-16);
+  }
+
+  /* El menú lateral acompaña mientras se hace scroll */
+  .sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-8));
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--color-wine);
+    border-bottom: 0;
+  }
+
+  .navLink {
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0;
+  }
+
+  .current {
+    border-bottom-color: var(--color-border);
+    padding-left: var(--space-3);
+    box-shadow: inset 2px 0 0 var(--color-accent);
+  }
+}

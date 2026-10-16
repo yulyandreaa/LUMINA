@@ -1,0 +1,316 @@
+.guide {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.lead {
+  max-width: 60ch;
+  font-size: var(--text-md);
+  line-height: 1.7;
+}
+
+.section {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  color: var(--color-accent);
+  font-size: var(--text-lg);
+}
+
+.text {
+  max-width: 62ch;
+  color: var(--color-text-muted);
+}
+
+/* Dibujo de la montura */
+.diagram {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: center;
+  margin: 0;
+  padding: var(--space-8) var(--space-6);
+  border-radius: 6px;
+  background: var(--color-bg-alt);
+}
+
+.svg {
+  width: 100%;
+  max-width: 34rem;
+  height: auto;
+}
+
+.frame {
+  fill: none;
+  stroke: var(--color-wine);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.dim {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+}
+
+.badge {
+  fill: var(--color-accent);
+  stroke: none;
+}
+
+.dim text {
+  fill: var(--color-ivory);
+  stroke: none;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+/* "49 □ 21 145" como grabado en la patilla */
+.engraving {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  letter-spacing: 0.08em;
+}
+
+.engraving small {
+  flex-basis: 100%;
+  color: var(--color-text-muted);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.measures {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .measures {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.measure dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}
+
+.measure dd {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.measure .range {
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+}
+
+.num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-ivory);
+  font-size: var(--text-xs);
+}
+
+/* Pasos */
+.steps {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.step {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border-top: 2px solid var(--color-accent);
+  background: var(--color-bg-alt);
+  font-size: var(--text-sm);
+}
+
+.stepNum {
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.stepTitle {
+  font-size: var(--text-md);
+}
+
+/* Tabla de tallas */
+.fictional {
+  justify-self: start;
+  padding: var(--space-2) var(--space-3);
+  border: 1px dashed var(--color-text-muted);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-3);
+  border-bottom: var(--border-hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table thead th {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.table td:not(.advice),
+.table th[scope='row'] {
+  white-space: nowrap; /* "46 mm" sin partirse en dos líneas */
+}
+
+.sizeLink {
+  color: var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.sizeLink:hover {
+  text-decoration: underline;
+}
+
+.advice {
+  max-width: 26ch;
+  color: var(--color-text-muted);
+}
+
+/* Forma del rostro */
+.faces {
+  display: grid;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .faces {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.face {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: var(--border-hairline);
+  border-radius: 6px;
+  font-size: var(--text-sm);
+}
+
+.faceName {
+  color: var(--color-accent);
+  font-size: var(--text-md);
+}
+
+.traits {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.faceLinks {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+/* Checklist */
+.checklist {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.checklist li {
+  position: relative;
+  padding-left: var(--space-8);
+}
+
+.checklist li::before {
+  content: '';
+  position: absolute;
+  top: 0.35em;
+  left: 0;
+  width: 1rem;
+  height: 0.55rem;
+  border-bottom: 2px solid var(--color-accent);
+  border-left: 2px solid var(--color-accent);
+  transform: rotate(-45deg);
+}
+
+/* Cierre */
+.cta {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-8);
+  border-radius: 6px;
+  background: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.ctaLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.cta :global(.text-link) {
+  color: var(--color-ivory);
+}

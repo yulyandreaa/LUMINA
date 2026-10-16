@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { products } from '../../data/products';
 import { searchProducts } from '../../lib/catalog';
 import { formatPrice } from '../../lib/format';
-import { FrameIllustration } from '../product/FrameIllustration';
+import { ProductThumb } from '../product/ProductThumb';
 import { Icon } from '../ui/Icon';
 import styles from './SearchOverlay.module.css';
 
@@ -66,7 +66,7 @@ export function SearchOverlay({ onClose }: { onClose: () => void }) {
                     <li key={p.id}>
                       <Link to={`/producto/${p.slug}`} className={styles.item}>
                         <span className={styles.thumb}>
-                          <FrameIllustration shape={p.shape} color={p.colors[0].hex} sun={p.category === 'gafas-de-sol'} />
+                          <ProductThumb product={p} color={p.colors[0]} />
                         </span>
                         <span>
                           <span className={styles.name}>{p.name}</span>

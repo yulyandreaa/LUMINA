@@ -4,7 +4,7 @@ import { MAX_QUANTITY } from '../../lib/cart';
 import { sizeGuide } from '../../data/sizes';
 import { formatPrice } from '../../lib/format';
 import { useCart } from '../../cart/CartContext';
-import { FrameIllustration } from '../product/FrameIllustration';
+import { ProductThumb } from '../product/ProductThumb';
 import { Icon } from '../ui/Icon';
 import styles from './CartLineItem.module.css';
 
@@ -17,7 +17,7 @@ export function CartLineItem({ line }: { line: ResolvedLine }) {
   return (
     <li className={styles.line}>
       <Link to={href} className={styles.thumb} tabIndex={-1} aria-hidden="true">
-        <FrameIllustration shape={product.shape} color={color.hex} sun={product.category === 'gafas-de-sol'} />
+        <ProductThumb product={product} color={color} />
       </Link>
 
       <div className={styles.body}>

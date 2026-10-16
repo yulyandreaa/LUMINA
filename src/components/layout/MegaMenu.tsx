@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import type { NavItem } from '../../data/navigation';
-import heroImg from '../../assets/photos/hero-retrato.jpg';
-import detailImg from '../../assets/photos/monturas-sombra.jpg';
 import styles from './MegaMenu.module.css';
 
 /*
@@ -36,16 +34,18 @@ export function MegaMenu({ id, item, onMouseEnter }: MegaMenuProps) {
           ))}
         </div>
 
-        <div className={styles.cards}>
-          <Link to={item.href} className={styles.card}>
-            <span className={styles.media}><img src={heroImg} alt="" loading="lazy" /></span>
-            <span>Ver todo · {item.label}</span>
-          </Link>
-          <Link to={`${item.href}?orden=mas-vendidos`} className={styles.card}>
-            <span className={styles.media}><img src={detailImg} alt="" loading="lazy" /></span>
-            <span>Más vendidos</span>
-          </Link>
-        </div>
+        {item.cardImages && (
+          <div className={styles.cards}>
+            <Link to={item.href} className={styles.card}>
+              <span className={styles.media}><img src={item.cardImages.all} alt="" loading="lazy" /></span>
+              <span>Ver todo · {item.label}</span>
+            </Link>
+            <Link to={`${item.href}?orden=mas-vendidos`} className={styles.card}>
+              <span className={styles.media}><img src={item.cardImages.bestSellers} alt="" loading="lazy" /></span>
+              <span>Más vendidos</span>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

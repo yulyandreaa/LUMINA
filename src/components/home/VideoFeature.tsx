@@ -71,7 +71,8 @@ export function VideoFeature({ poster, title, src }: VideoFeatureProps) {
         <img className={styles.media} src={poster} alt="" loading="lazy" />
       )}
       <div className={`container ${styles.overlay}`}>
-        <h2 className={styles.title}>{title}</h2>
+        {/* El título no se ve sobre el vídeo (decisión de diseño), pero lo leen los lectores de pantalla. */}
+        <h2 className="visually-hidden">{title}</h2>
         {src ? (
           <button className={styles.play} onClick={toggle} aria-label={playing ? 'Pausar vídeo' : 'Reproducir vídeo'}>
             <Icon name={playing ? 'pause' : 'play'} size={22} />

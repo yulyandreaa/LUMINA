@@ -6,8 +6,7 @@ import styles from './Footer.module.css';
 
 /*
  * Footer con la estructura de la referencia:
- * cita de marca · 4 columnas · atención al cliente · legales.
- * Los datos de contacto están PENDIENTES: no se inventan teléfonos ni correos.
+ * cita de marca · 4 columnas · legales.
  */
 export function Footer() {
   const year = new Date().getFullYear();
@@ -38,13 +37,6 @@ export function Footer() {
           </nav>
         ))}
 
-        <div className={styles.help}>
-          <Eyebrow as="h2" className={styles.title}>
-            ¿Necesitas ayuda?
-          </Eyebrow>
-          <p>Te ayudamos a encontrar la montura que va con tu forma de ver.</p>
-          <p className={styles.pending}>[Pendiente: correo, WhatsApp y horario de atención]</p>
-        </div>
       </div>
 
       <div className={`container ${styles.bottom}`}>

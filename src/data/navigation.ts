@@ -2,7 +2,12 @@
  * Estructura de navegación. Replica la de la referencia
  * (Categoría · Color · Forma · Talla en el megamenú) con el catálogo de LUMINA v1:
  * solo monturas y gafas de sol, sin lentes graduadas.
+ * Fotos del megamenú: generadas con IA (Magnific), una pareja distinta por categoría.
  */
+import menuMonturasTodo from '../assets/photos/menu-monturas-todo.jpg';
+import menuMonturasVendidos from '../assets/photos/menu-monturas-vendidos.jpg';
+import menuSolTodo from '../assets/photos/menu-sol-todo.jpg';
+import menuSolVendidos from '../assets/photos/menu-sol-vendidos.jpg';
 
 export interface NavLink {
   label: string;
@@ -19,6 +24,8 @@ export interface NavItem {
   href: string;
   /** Si existe, el elemento abre un megamenú. */
   columns?: NavColumn[];
+  /** Fotos de las 2 tarjetas del megamenú ("Ver todo" y "Más vendidos"). */
+  cardImages?: { all: string; bestSellers: string };
 }
 
 const byColor = (base: string): NavColumn => ({
@@ -75,6 +82,7 @@ export const mainNav: NavItem[] = [
       byShape('/monturas'),
       bySize('/monturas'),
     ],
+    cardImages: { all: menuMonturasTodo, bestSellers: menuMonturasVendidos },
   },
   {
     label: 'Gafas de sol',
@@ -85,6 +93,7 @@ export const mainNav: NavItem[] = [
       byShape('/gafas-de-sol'),
       bySize('/gafas-de-sol'),
     ],
+    cardImages: { all: menuSolTodo, bestSellers: menuSolVendidos },
   },
   { label: 'Tiendas', href: '/tiendas' },
 ];

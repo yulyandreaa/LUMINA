@@ -1,6 +1,6 @@
 /*
  * Sedes de LUMINA en Bogotá.
- * ⚠️ Barrios PROPUESTOS; dirección, teléfono y horario pendientes de confirmar por LUMINA.
+ * ⚠️ Barrios PROPUESTOS; dirección aún sin definir (no se muestra). Teléfono y horario dados por LUMINA.
  * Fotos: fachadas generadas con IA (Magnific) con el logo real montado en edición.
  */
 export interface Store {
@@ -21,8 +21,8 @@ export const stores: Store[] = [
     name: 'Tienda LUMINA Quinta Camacho',
     city: 'Bogotá, Colombia',
     address: null,
-    phone: null,
-    hours: null,
+    phone: '1234567892',
+    hours: '10:00 a. m. – 7:00 p. m.',
     image: '/stores/quinta-camacho.jpg',
     alt: 'Fachada borgoña de LUMINA en un edificio de ladrillo de Quinta Camacho, con los cerros al fondo',
   },
@@ -31,8 +31,8 @@ export const stores: Store[] = [
     name: 'Tienda LUMINA Usaquén',
     city: 'Bogotá, Colombia',
     address: null,
-    phone: null,
-    hours: null,
+    phone: '1234567892',
+    hours: '10:00 a. m. – 7:00 p. m.',
     image: '/stores/usaquen.jpg',
     alt: 'Fachada borgoña de LUMINA en una casa colonial blanca de Usaquén, sobre calle empedrada',
   },
@@ -41,8 +41,8 @@ export const stores: Store[] = [
     name: 'Tienda LUMINA Parque 93',
     city: 'Bogotá, Colombia',
     address: null,
-    phone: null,
-    hours: null,
+    phone: '1234567892',
+    hours: '10:00 a. m. – 7:00 p. m.',
     image: '/stores/parque-93.jpg',
     alt: 'Fachada borgoña de LUMINA con grandes ventanales en un edificio de ladrillo cerca del Parque de la 93',
   },

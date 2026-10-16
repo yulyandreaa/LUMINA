@@ -36,4 +36,8 @@ export interface Product {
   bestSeller?: boolean;
   /** true = producto de ejemplo, no existe en inventario real. */
   fictional: boolean;
+  /** Oculto desde el panel: no aparece en la tienda. */
+  hidden?: boolean;
+  /** Unidades por variante "color:talla" (panel de administración). */
+  stock?: Record<string, number>;
 }

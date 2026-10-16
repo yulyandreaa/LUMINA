@@ -1,0 +1,150 @@
+/* Tres tarjetas altas, centradas y con ancho máximo para que no queden gigantes en pantallas anchas. */
+.bar {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 66rem;
+  padding-block: clamp(var(--space-16), 9vw, 9rem); /* aire generoso arriba (sección borgoña) y abajo (footer) */
+}
+
+@media (min-width: 768px) {
+  .bar {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+/*
+ * Foto de fondo con la proporción del diseño; el contenido va arriba a la izquierda,
+ * sobre la zona lisa de cada foto.
+ */
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  aspect-ratio: 600 / 1148;
+  padding: 13% 14% 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #ead8cf;
+  background-position: center;
+  background-size: cover;
+  color: var(--color-wine);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* En celular la tarjeta es ancha: menos alta para no ocupar toda la pantalla. */
+@media (max-width: 767px) {
+  .card {
+    aspect-ratio: 4 / 5;
+    padding: var(--space-10) var(--space-8) 0;
+    background-position: center 60%;
+  }
+}
+
+.card[data-tone='dark'] {
+  color: var(--color-ivory);
+}
+
+/* Velo vino suave arriba en la tarjeta oscura para que el texto claro se lea sobre la pared. */
+.card[data-tone='dark']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(50 27 29 / 0.5) 0%, rgb(50 27 29 / 0.32) 40%, transparent 62%);
+}
+
+/* Texto un poco más angosto para que no pase sobre el marco dorado del espejo, con sombra suave. */
+.card[data-tone='dark'] .text {
+  max-width: 20ch;
+  color: var(--color-ivory);
+  text-shadow: 0 1px 8px rgb(50 27 29 / 0.55);
+}
+
+/* Tarjeta clara con foto cargada (caja LUMINA): velo marfil arriba y texto más angosto y sólido. */
+.card[data-veil]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(247 240 234 / 0.6) 0%, rgb(247 240 234 / 0.4) 38%, transparent 58%);
+}
+
+.card[data-veil] .text {
+  max-width: 21ch;
+  color: var(--color-wine);
+  text-shadow: 0 1px 8px rgb(247 240 234 / 0.7);
+}
+
+.card[data-tone='dark'] .title {
+  text-shadow: 0 1px 8px rgb(50 27 29 / 0.45);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px -14px rgb(50 27 29 / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}
+
+.icon {
+  margin-bottom: var(--space-3);
+  color: var(--color-burgundy);
+}
+
+.card[data-tone='dark'] .icon {
+  color: var(--color-ivory);
+}
+
+.title {
+  white-space: pre-line; /* el salto de línea viene en el texto, como en el diseño */
+  color: var(--color-burgundy);
+  font-size: var(--text-md);
+  line-height: 1.4;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+/* Tarjeta clara con foto cargada (caja LUMINA): velo marfil arriba y texto más angosto y sólido. */
+.card[data-veil]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(247 240 234 / 0.6) 0%, rgb(247 240 234 / 0.4) 38%, transparent 58%);
+}
+
+.card[data-veil] .text {
+  max-width: 21ch;
+  color: var(--color-wine);
+  text-shadow: 0 1px 8px rgb(247 240 234 / 0.7);
+}
+
+.card[data-tone='dark'] .title {
+  color: var(--color-ivory);
+}
+
+/* Filete corto bajo el título. */
+.title::after {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 1px;
+  margin-top: var(--space-4);
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.text {
+  max-width: 26ch;
+  color: color-mix(in srgb, currentColor 88%, transparent);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}

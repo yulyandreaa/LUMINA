@@ -1,4 +1,4 @@
-import { products } from '../src/data/products';
+import { baseProducts as products } from '../src/data/products';
 import { resolveLines } from '../src/lib/cart';
 import type { CheckoutRequest } from '../src/lib/checkoutSchema';
 

@@ -3,9 +3,9 @@ import { Icon } from '../ui/Icon';
 import styles from './Gallery.module.css';
 
 /*
- * Galería de la ficha (en la referencia: carrusel de 1 imagen por vista + miniaturas).
+ * Galería de la ficha: carrusel de 1 imagen por vista, sin miniaturas (decisión de LUMINA).
  * Implementada con scroll-snap: en móvil se desliza con el dedo de forma nativa;
- * las flechas y miniaturas solo hacen scroll hasta la diapositiva elegida.
+ * las flechas solo hacen scroll hasta la diapositiva elegida.
  */
 export interface GallerySlide {
   key: string;
@@ -61,21 +61,6 @@ export function Gallery({ slides, label }: { slides: GallerySlide[]; label: stri
           {index + 1} / {slides.length}
         </p>
       </div>
-
-      <ul className={styles.thumbs}>
-        {slides.map((s, i) => (
-          <li key={s.key}>
-            <button
-              className={styles.thumb}
-              aria-current={i === index}
-              aria-label={`Ver imagen ${i + 1}: ${s.caption}`}
-              onClick={() => goTo(i)}
-            >
-              {s.content}
-            </button>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }

@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import type { FrameSize } from '../types/product';
 import { getProductBySlug, products } from '../data/products';
+import { isSoldOut } from '../admin/catalogOverrides';
 import { sizeGuide } from '../data/sizes';
 import { shapeLabels } from '../lib/catalog';
 import { formatPrice } from '../lib/format';
+import { FavoriteButton } from '../components/product/FavoriteButton';
 import { FrameIllustration } from '../components/product/FrameIllustration';
 import { Gallery, type GallerySlide } from '../components/product/Gallery';
 import { Swatches } from '../components/product/Swatches';
@@ -16,8 +18,6 @@ import { Button } from '../components/ui/Button';
 import { Dialog } from '../components/ui/Dialog';
 import { PlaceholderPage } from './PlaceholderPage';
 import { useCart } from '../cart/CartContext';
-import heroRetrato from '../assets/photos/hero-retrato.jpg';
-import patilla from '../assets/photos/patilla-detalle.jpg';
 import { usePageTitle } from '../hooks/usePageTitle';
 import styles from './ProductPage.module.css';
 
@@ -72,29 +72,40 @@ function ProductView({ slug }: { slug: string }) {
       { replace: true },
     );
 
+  // Agotado según el inventario del panel (sin inventario registrado se puede comprar).
+  const soldOut = size ? isSoldOut(product, color.id, size) : false;
+
   const onAdd = () => {
     if (!size) {
       setSizeError('Elige una talla para continuar.');
       return;
     }
+    if (soldOut) return;
     cart.add({ productId: product.id, colorId: color.id, size });
     cart.open();
   };
 
-  const slides: GallerySlide[] = [
-    {
-      key: 'frente',
-      caption: `${color.name} · Frente`,
-      content: <FrameIllustration shape={product.shape} color={color.hex} sun={sun} />,
-    },
-    {
-      key: 'angulo',
-      caption: `${color.name} · Tres cuartos`,
-      content: <FrameIllustration shape={product.shape} color={color.hex} sun={sun} angled />,
-    },
-    { key: 'detalle', caption: 'Imagen de ambiente', content: <img src={patilla} alt="" /> },
-    { key: 'retrato', caption: 'Imagen de ambiente', content: <img src={heroRetrato} alt="" /> },
-  ];
+  // Galería con las fotos del propio producto: primero el color elegido y luego los demás colores.
+  // Si un producto no tuviera fotos, se muestran los dos dibujos (frente y tres cuartos).
+  const photoColors = [color, ...product.colors.filter((c) => c.id !== color.id)].filter((c) => c.image);
+  const slides: GallerySlide[] = photoColors.length
+    ? photoColors.map((c) => ({
+        key: `foto-${c.id}`,
+        caption: c.name,
+        content: <img src={c.image} alt={`${product.name} en ${c.name}`} />,
+      }))
+    : [
+        {
+          key: 'frente',
+          caption: `${color.name} · Frente`,
+          content: <FrameIllustration shape={product.shape} color={color.hex} sun={sun} />,
+        },
+        {
+          key: 'angulo',
+          caption: `${color.name} · Tres cuartos`,
+          content: <FrameIllustration shape={product.shape} color={color.hex} sun={sun} angled />,
+        },
+      ];
 
   const measures = size ? sizeGuide[size] : sizeGuide[product.sizes[0]];
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
@@ -110,12 +121,14 @@ function ProductView({ slug }: { slug: string }) {
           <span aria-current="page">{product.name}</span>
         </nav>
 
-        <Gallery slides={slides} label={`Galería de imágenes de ${product.name}`} />
+        <Gallery key={color.id} slides={slides} label={`Galería de imágenes de ${product.name}`} />
 
         <div className={styles.info}>
           <div className={styles.head}>
-            {product.fictional && <span className={styles.fictional}>Producto ficticio</span>}
-            <h1 className={styles.name}>{product.name}</h1>
+            <div className={styles.titleRow}>
+              <h1 className={styles.name}>{product.name}</h1>
+              <FavoriteButton product={product} color={color} />
+            </div>
             <p className={styles.price}>{formatPrice(product.price)}</p>
             <p className={styles.tax}>Precio de ejemplo · Impuestos pendientes de definir</p>
           </div>
@@ -147,6 +160,7 @@ function ProductView({ slug }: { slug: string }) {
               sizes={product.sizes}
               selected={size}
               error={sizeError}
+              soldOut={product.sizes.filter((s) => isSoldOut(product, color.id, s))}
               onSelect={(s) => {
                 setSizeError('');
                 setParam('talla', s);
@@ -155,8 +169,10 @@ function ProductView({ slug }: { slug: string }) {
           </div>
 
           <div ref={buyRef} className={styles.buy}>
-            <Button onClick={onAdd} withArrow className={styles.buyButton}>
-              Añadir a la cesta · Solo montura
+            <Button onClick={onAdd} withArrow={!soldOut} disabled={soldOut} className={styles.buyButton}>
+              {soldOut
+                ? `Agotado en ${color.name.toLowerCase()} · talla ${sizeGuide[size!].label.toLowerCase()}`
+                : 'Añadir a la cesta · Solo montura'}
             </Button>
             <p className={styles.note}>LUMINA v1 vende monturas sin graduación.</p>
           </div>
@@ -200,7 +216,12 @@ function ProductView({ slug }: { slug: string }) {
               {
                 id: 'envios',
                 title: 'Envíos y devoluciones',
-                content: <p>[Pendiente: política de envíos, plazos y devoluciones de LUMINA para Colombia.]</p>,
+                content: (
+                  <p>
+                    Envío gratis a toda Colombia (1 a 7 días hábiles según la ciudad) y 30 días para cambios. Detalles
+                    en <Link to="/envios-y-devoluciones">Envíos y devoluciones</Link>.
+                  </p>
+                ),
               },
             ]}
           />
@@ -220,7 +241,11 @@ function ProductView({ slug }: { slug: string }) {
         <div className={`container ${styles.stickyInner}`}>
           <div className={styles.stickyInfo}>
             <span className={styles.stickyThumb}>
-              <FrameIllustration shape={product.shape} color={color.hex} sun={sun} />
+              {color.image ? (
+                <img src={color.image} alt="" />
+              ) : (
+                <FrameIllustration shape={product.shape} color={color.hex} sun={sun} />
+              )}
             </span>
             <span>
               <strong>{product.name}</strong> · {color.name}
@@ -228,9 +253,10 @@ function ProductView({ slug }: { slug: string }) {
             </span>
           </div>
           <Button
+            disabled={soldOut}
             onClick={() => (size ? onAdd() : buyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }))}
           >
-            {size ? 'Añadir a la cesta' : 'Elegir talla'}
+            {soldOut ? 'Agotado' : size ? 'Añadir a la cesta' : 'Elegir talla'}
           </Button>
         </div>
       </div>

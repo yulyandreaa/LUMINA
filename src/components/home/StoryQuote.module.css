@@ -13,13 +13,50 @@
   object-position: 50% 50%;
 }
 
-/* Panel de color: rosa empolvado de LUMINA (en la referencia, el amarillo de Moscot). */
+/* Panel de color: borgoña de LUMINA con textura de grano (en la referencia, el amarillo de Moscot). */
 .panel {
   display: grid;
   place-items: center;
   padding: var(--space-16) var(--gutter);
-  background: var(--color-powder);
-  color: var(--color-wine);
+  background-color: var(--color-burgundy);
+  background-image:
+    var(--texture-grain),
+    radial-gradient(90% 70% at 50% 35%, rgb(255 255 255 / 0.07), transparent 65%),
+    linear-gradient(180deg, transparent 50%, rgb(50 27 29 / 0.3));
+  color: var(--color-ivory);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/*
+ * Arcos de lentes: dos aros finos marfil (doble línea, como el borde de un acetato)
+ * que se salen por las esquinas del panel. Decorativos, detrás del texto.
+ */
+.panel::before,
+.panel::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgb(247 240 234 / 0.24);
+  border-radius: 50%;
+  outline: 1px solid rgb(247 240 234 / 0.12);
+  outline-offset: 14px;
+  pointer-events: none;
+}
+
+.panel::before {
+  width: clamp(18rem, 32vw, 28rem);
+  aspect-ratio: 1;
+  top: clamp(-10rem, -12vw, -6rem);
+  right: clamp(-10rem, -12vw, -6rem);
+}
+
+.panel::after {
+  width: clamp(14rem, 24vw, 21rem);
+  aspect-ratio: 1;
+  bottom: clamp(-8rem, -9vw, -5rem);
+  left: clamp(-8rem, -9vw, -5rem);
 }
 
 .content {

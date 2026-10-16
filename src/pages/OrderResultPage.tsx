@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useCart } from '../cart/CartContext';
+import { useAuth } from '../auth/AuthContext';
+import { readOrders } from '../admin/useAdminOrders';
+import { allProducts } from '../data/products';
+import { cartSubtotal, resolveLines } from '../lib/cart';
 import type { TransactionStatus } from '../lib/checkoutSchema';
 import { formatPrice } from '../lib/format';
 import { Button } from '../components/ui/Button';
@@ -12,6 +16,7 @@ import styles from './OrderResultPage.module.css';
  * /pedido/resultado?id=…  — Wompi redirige aquí después del pago.
  * Consulta el estado a NUESTRO servidor (/api/transaction). Es informativo:
  * la confirmación definitiva llega por el webhook.
+ * /pedido/resultado?simulado=LUM-1001 — pago de prueba aprobado (sin pasarela).
  */
 type State =
   | { kind: 'loading' }
@@ -29,7 +34,65 @@ const copy: Record<TransactionStatus['status'], { title: string; text: string }>
 
 export function OrderResultPage() {
   const [params] = useSearchParams();
-  const id = params.get('id');
+  const simulated = params.get('simulado');
+  return simulated ? <SimulatedResult orderId={simulated} /> : <WompiResult id={params.get('id')} />;
+}
+
+/* Pago de prueba: el pedido ya quedó creado al aprobarlo en el checkout. */
+function SimulatedResult({ orderId }: { orderId: string }) {
+  usePageTitle('Estado de tu pedido');
+  const { customer } = useAuth();
+  const order = readOrders().find((o) => o.id === orderId);
+
+  return (
+    <section className={`container ${styles.page}`}>
+      <Eyebrow>Tu pedido</Eyebrow>
+      {order ? (
+        <>
+          <h1 className={styles.title} data-status="APPROVED">
+            ¡Pago aprobado!
+          </h1>
+          <p className={styles.text}>
+            Gracias por tu compra, {order.customer.name.split(' ')[0]}. Estamos preparando tu pedido.
+          </p>
+          <dl className={styles.details}>
+            <div>
+              <dt>Pedido</dt>
+              <dd>{order.id}</dd>
+            </div>
+            <div>
+              <dt>Total</dt>
+              <dd>{formatPrice(cartSubtotal(resolveLines(order.lines, allProducts)))}</dd>
+            </div>
+            <div>
+              <dt>Medio de pago</dt>
+              <dd>{order.payment} (prueba)</dd>
+            </div>
+          </dl>
+          <div className={styles.actions}>
+            {customer?.email === order.customer.email && (
+              <Button to="/cuenta/pedidos" withArrow>
+                Ver en Mis pedidos
+              </Button>
+            )}
+            <Button to="/" variant="secondary">
+              Seguir comprando
+            </Button>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1 className={styles.title}>No encontramos este pedido</h1>
+          <Button to="/" withArrow>
+            Volver al inicio
+          </Button>
+        </>
+      )}
+    </section>
+  );
+}
+
+function WompiResult({ id }: { id: string | null }) {
   const { clear } = useCart();
   usePageTitle('Estado de tu pedido');
   const [state, setState] = useState<State>(id ? { kind: 'loading' } : { kind: 'missing' });

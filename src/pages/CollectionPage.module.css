@@ -1,14 +1,63 @@
+/* Banner: foto de fondo + velo oscuro para que el texto marfil se lea bien. */
 .hero {
+  position: relative;
   display: grid;
-  justify-items: start;
+  place-items: center;
+  min-height: clamp(18rem, 32vw, 28rem);
+  overflow: hidden;
+  background: var(--color-wine);
+  color: var(--color-ivory);
+  text-align: center;
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-wine) 45%, transparent);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
   gap: var(--space-4);
-  padding-block: var(--space-10) var(--space-12);
+  padding: var(--space-12) var(--gutter);
+}
+
+.eyebrow.eyebrow {
+  color: var(--color-ivory);
+}
+
+/* El filete del eyebrow queda centrado bajo el texto. */
+.eyebrow::after {
+  margin-inline: auto;
+}
+
+.title {
+  color: var(--color-ivory);
+  font-size: var(--text-3xl);
+  text-shadow: 0 2px 24px rgb(0 0 0 / 0.3);
+}
+
+.text {
+  max-width: 52ch;
+  font-size: var(--text-md);
 }
 
 .breadcrumb {
   display: flex;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
+  padding-block: var(--space-6) var(--space-8);
   color: var(--color-text-muted);
   font-size: var(--text-xs);
 }
@@ -17,13 +66,69 @@
   color: var(--color-accent);
 }
 
-.title {
-  color: var(--color-accent);
-  font-size: var(--text-3xl);
+/* "Sobre la colección": foto a la izquierda + panel borgoña, apilados en móvil. */
+.about {
+  display: grid;
+  margin-top: var(--space-16);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
-.text {
-  max-width: 52ch;
-  color: var(--color-text-muted);
-  font-size: var(--text-md);
+@media (min-width: 900px) {
+  .about {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* La foto va absoluta para que su tamaño original no estire la sección. */
+.aboutMedia {
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.aboutMedia img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%; /* deja ver la montura de arriba del bodegón */
+}
+
+/* En escritorio la foto se recorta para llenar el alto de la sección. */
+@media (min-width: 900px) {
+  .aboutMedia {
+    aspect-ratio: auto;
+    min-height: clamp(20rem, 28vw, 25rem);
+  }
+}
+
+.aboutContent {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--gutter);
+  text-align: center;
+}
+
+.aboutContent p {
+  max-width: 56ch;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.aboutContent a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.aboutContent a:hover {
+  opacity: 0.8;
+}
+
+.aboutTitle {
+  margin-bottom: var(--space-2);
+  color: var(--color-ivory);
+  font-size: var(--text-xl);
 }

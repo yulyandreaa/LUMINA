@@ -36,11 +36,6 @@
   padding-bottom: var(--space-12);
 }
 
-.title {
-  max-width: 16ch;
-  font-size: var(--text-2xl);
-}
-
 .play {
   display: grid;
   place-items: center;

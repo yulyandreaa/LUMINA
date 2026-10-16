@@ -70,10 +70,6 @@
   background: var(--color-bg-alt);
 }
 
-.thumb svg {
-  width: 85%;
-}
-
 .name {
   display: block;
   font-weight: 600;

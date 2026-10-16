@@ -9,8 +9,12 @@
 export interface PageSection {
   heading: string;
   paragraphs: string[];
+  /** Lista corta opcional (plazos, condiciones, pasos). */
+  items?: string[];
   /** true = contenido que LUMINA debe redactar o confirmar. */
   pending?: boolean;
+  /** true = dato de ejemplo inventado, para reemplazar por la política real (no se muestra en la página). */
+  fictional?: boolean;
 }
 
 export interface InfoPage {
@@ -20,6 +24,8 @@ export interface InfoPage {
   intro: string;
   sections: PageSection[];
   legalReview?: boolean;
+  /** Reemplaza el aviso genérico de revisión legal. */
+  reviewNote?: string;
   /** Bloque especial que la página inserta (p. ej. la guía de tallas). */
   embed?: 'size-guide' | 'faq';
 }
@@ -47,49 +53,114 @@ export const infoPages: InfoPage[] = [
     slug: 'envios-y-devoluciones',
     eyebrow: 'Ayuda',
     title: 'Envíos y devoluciones',
-    intro: 'Condiciones de entrega en Colombia y cómo devolver un producto.',
-    legalReview: true,
+    intro: 'Enviamos gratis a toda Colombia y tienes 30 días para cambiar tu montura. Aquí está lo esencial.',
     sections: [
       {
         heading: 'Envíos',
-        paragraphs: ['Cobertura, transportadora, plazos de entrega y costo del envío: pendientes de definir.'],
-        pending: true,
+        paragraphs: ['Envío gratis en todos los pedidos. Despachamos el mismo día hábil si pagas antes de la 1:00 p. m. y te enviamos el número de guía por correo.'],
+        items: [
+          'Bogotá: 1 a 2 días hábiles.',
+          'Medellín, Cali, Barranquilla y otras ciudades principales: 2 a 4 días hábiles.',
+          'Resto del país: 4 a 7 días hábiles.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Recoger en tienda',
+        paragraphs: [
+          'Gratis en nuestras tres tiendas de Bogotá. Tu pedido estará listo en 1 día hábil; te avisamos por correo. Lleva tu documento de identidad.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Cambios',
+        paragraphs: ['Tienes 30 días calendario desde la entrega para cambiar tu montura por otro modelo o color, sin costo.'],
+        items: ['Sin señales de uso.', 'Con su estuche, paño y empaque original.', 'Con el número de pedido.'],
+        fictional: true,
       },
       {
         heading: 'Derecho de retracto',
         paragraphs: [
-          'En ventas a distancia, el Estatuto del Consumidor (Ley 1480 de 2011, art. 47) reconoce al comprador el derecho a retractarse dentro de los cinco (5) días hábiles siguientes a la entrega.',
-          'Procedimiento, canal de solicitud y plazos de reembolso de LUMINA: pendientes de definir y validar legalmente.',
+          'Si cambias de opinión, tienes 5 días hábiles desde la entrega para retractarte (Ley 1480 de 2011, art. 47). Devuelve el producto en las mismas condiciones en que lo recibiste; el costo del envío de vuelta corre por tu cuenta.',
+          'Te devolvemos el dinero en máximo 15 días calendario, al mismo medio de pago (Ley 2439 de 2024).',
         ],
-        pending: true,
       },
       {
         heading: 'Reversión del pago',
         paragraphs: [
-          'La Ley 1480 de 2011 (art. 51) regula la reversión del pago en compras electrónicas en determinados casos (fraude, operación no solicitada, producto no recibido o defectuoso, entre otros).',
-          'Canal y procedimiento para solicitarla: pendientes de definir.',
+          'Si pagaste con un medio electrónico y hubo fraude, una operación no solicitada, o el producto no llegó, no corresponde a lo pedido o tiene un defecto, puedes pedir que se reverse el pago (Ley 1480, art. 51).',
+          'Avísanos a nosotros y a tu banco dentro de los 5 días hábiles siguientes. La reversión se hace efectiva en máximo 15 días hábiles (Decreto 587 de 2016).',
         ],
-        pending: true,
       },
-      { heading: 'Cambios', paragraphs: [P], pending: true },
+      {
+        heading: 'Cómo solicitarlo',
+        paragraphs: [],
+        items: [
+          'Escríbenos desde Mi cuenta › Mis pedidos o en la página de Contacto, con tu número de pedido.',
+          'Te enviamos una guía de envío prepagada para cambios (en retracto, el envío lo pagas tú).',
+          'Revisamos el producto en 2 días hábiles y despachamos tu cambio o tramitamos el reembolso.',
+        ],
+        fictional: true,
+      },
     ],
   },
   {
     slug: 'garantia',
     eyebrow: 'Ayuda',
     title: 'Garantía',
-    intro: 'Qué cubre la garantía de tus monturas y cómo solicitarla.',
-    legalReview: true,
+    intro: 'Todas nuestras monturas y gafas de sol tienen 1 año de garantía desde la entrega. Aquí está lo esencial.',
     sections: [
       {
-        heading: 'Garantía legal',
+        heading: 'Plazo',
         paragraphs: [
-          'Todos los productos cuentan con la garantía legal establecida en la Ley 1480 de 2011.',
-          'Plazo, cobertura y exclusiones de LUMINA: pendientes de definir.',
+          '1 año contado desde que recibes tu pedido. Es el término que fija la ley para productos nuevos cuando no se indica otro (Ley 1480 de 2011, art. 8).',
         ],
-        pending: true,
       },
-      { heading: 'Cómo solicitarla', paragraphs: [P], pending: true },
+      {
+        heading: 'Qué cubre',
+        paragraphs: ['Defectos de fabricación que aparezcan con un uso normal, por ejemplo:'],
+        items: [
+          'Bisagras o tornillos que se rompen o aflojan sin un golpe.',
+          'Uniones, plaquetas o terminales que se sueltan.',
+          'Acetato que se deforma o cambia de color sin una causa externa.',
+          'Lentes de gafas de sol que se desprenden o pierden su tratamiento por defecto.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Qué no cubre',
+        paragraphs: ['Daños causados por un uso indebido o por no seguir las indicaciones de cuidado (Ley 1480, art. 16), como:'],
+        items: [
+          'Golpes, caídas o aplastamiento.',
+          'Calor extremo, por ejemplo dejarlas en un carro al sol.',
+          'Rayones por el uso diario.',
+          'Arreglos hechos por terceros, pérdida o robo.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Qué hacemos',
+        paragraphs: [
+          'Reparamos tu montura sin costo. Si la falla se repite, eliges entre una nueva reparación, el cambio por otra igual o la devolución de tu dinero (Ley 1480, art. 11).',
+        ],
+      },
+      {
+        heading: 'Cómo solicitarla',
+        paragraphs: [],
+        items: [
+          'Lleva tus gafas a cualquiera de nuestras tres tiendas, o escríbenos desde Mi cuenta › Mis pedidos o en Contacto, con tu número de pedido y fotos del daño.',
+          'Si no puedes ir a una tienda, te enviamos una guía de envío prepagada.',
+          'Te respondemos en 2 días hábiles (la ley fija un máximo de 15).',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Ajustes gratis, siempre',
+        paragraphs: [
+          'Aunque tu garantía haya terminado, en nuestras tiendas ajustamos tus monturas LUMINA y cambiamos plaquetas o tornillos sin costo.',
+        ],
+        fictional: true,
+      },
     ],
   },
   {
@@ -104,44 +175,152 @@ export const infoPages: InfoPage[] = [
     slug: 'terminos',
     eyebrow: 'Legal',
     title: 'Términos y condiciones',
-    intro: 'Condiciones que rigen el uso de la tienda y las compras realizadas en ella.',
-    legalReview: true,
+    intro: 'Las reglas de compra en la tienda online de LUMINA, en pocas palabras. Última actualización: 16 de octubre de 2026.',
     sections: [
-      'Identificación del vendedor (razón social, NIT, domicilio, contacto)',
-      'Proceso de compra y aceptación del pedido',
-      'Precios, impuestos y medios de pago',
-      'Envíos, retracto, cambios y garantía',
-      'Propiedad intelectual',
-      'Ley aplicable y resolución de conflictos',
-    ].map((heading) => ({ heading, paragraphs: [P], pending: true })),
+      {
+        heading: 'Quiénes somos',
+        paragraphs: [
+          'LUMINA Óptica S.A.S. es una óptica con sede en Bogotá, Colombia. Puedes contactarnos desde la página de Contacto o en cualquiera de nuestras tres tiendas.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Uso de la tienda',
+        paragraphs: [
+          'Al comprar aceptas estos términos. Para comprar debes ser mayor de edad y darnos datos reales y completos, porque los usamos para facturar y entregar tu pedido.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Productos y precios',
+        paragraphs: [],
+        items: [
+          'Vendemos monturas y gafas de sol. Por ahora no vendemos lentes formuladas.',
+          'Los precios están en pesos colombianos (COP) e incluyen IVA.',
+          'El color puede verse un poco distinto según tu pantalla.',
+          'Si un precio aparece con un error evidente, te avisamos antes de despachar y puedes cancelar con reembolso total.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Cómo se confirma tu compra',
+        paragraphs: [
+          'Antes de pagar ves un resumen con los productos, el precio total y el envío. Tu pedido queda confirmado cuando el pago es aprobado; en ese momento te enviamos un correo con tu número de pedido.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Medios de pago',
+        paragraphs: [
+          'Pagas con Wompi: tarjeta débito o crédito, PSE, Nequi o Botón Bancolombia. LUMINA no ve ni guarda los datos de tu tarjeta.',
+        ],
+      },
+      {
+        heading: 'Envío y entrega',
+        paragraphs: [
+          'Los plazos están en Envíos y devoluciones. En ningún caso superan los 30 días calendario; si no recibes tu pedido a tiempo, puedes cancelarlo y te devolvemos el dinero (Ley 1480 de 2011, art. 50).',
+        ],
+      },
+      {
+        heading: 'Retracto, cambios y garantía',
+        paragraphs: [
+          'Tienes 5 días hábiles desde la entrega para retractarte, 30 días para cambios y 1 año de garantía. Los detalles están en Envíos y devoluciones y en Garantía.',
+        ],
+      },
+      {
+        heading: 'Datos personales',
+        paragraphs: [
+          'Tratamos tus datos conforme a la Ley 1581 de 2012. Consulta nuestra Política de tratamiento de datos personales.',
+        ],
+      },
+      {
+        heading: 'Propiedad intelectual',
+        paragraphs: [
+          'La marca LUMINA, su logo, las fotos y los textos de esta tienda pertenecen a LUMINA. No puedes usarlos sin nuestra autorización.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Quejas y reclamos',
+        paragraphs: [
+          'Escríbenos desde Contacto. Te respondemos en máximo 15 días hábiles (Ley 1480, art. 58). Si no quedas conforme, puedes acudir a la Superintendencia de Industria y Comercio.',
+          'Estos términos se rigen por la ley colombiana. Si los actualizamos, aplica la versión vigente el día de tu compra.',
+        ],
+      },
+    ],
   },
   {
     slug: 'tratamiento-de-datos',
     eyebrow: 'Legal',
     title: 'Política de tratamiento de datos personales',
-    intro: 'Cómo LUMINA recoge, usa y protege tus datos, conforme a la Ley 1581 de 2012 y sus decretos reglamentarios.',
-    legalReview: true,
+    intro: 'Qué datos tuyos usamos, para qué y cómo puedes controlarlos, conforme a la Ley 1581 de 2012. Vigente desde el 16 de octubre de 2026.',
     sections: [
-      { heading: 'Responsable del tratamiento', paragraphs: ['Razón social, NIT, dirección y correo de contacto: pendientes.'], pending: true },
       {
-        heading: 'Datos que recogemos y para qué',
+        heading: 'Responsable',
         paragraphs: [
-          'En el checkout solicitamos nombre, documento, correo, teléfono y dirección para procesar y entregar tu pedido.',
-          'Finalidades completas (incluido el envío de novedades si te suscribes): pendientes de redactar.',
+          'LUMINA Óptica S.A.S., con sede en Bogotá, Colombia, es responsable de tus datos. Para cualquier solicitud, escríbenos desde la página de Contacto.',
         ],
-        pending: true,
+        fictional: true,
+      },
+      {
+        heading: 'Qué datos usamos y para qué',
+        paragraphs: [],
+        items: [
+          'Compras: nombre, documento, correo, celular y dirección, para procesar, facturar y entregar tu pedido.',
+          'Mi cuenta: correo, nombre, direcciones y favoritos, para gestionar tu cuenta y tus pedidos.',
+          'Examen visual: nombre, celular, correo y, si quieres, el motivo de la cita, para agendarla y recordártela.',
+          'Boletín: tu correo, para enviarte novedades solo si te suscribes. Puedes darte de baja cuando quieras.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Datos de salud',
+        paragraphs: [
+          'El motivo de tu examen visual es un dato sensible (Ley 1581, arts. 5 y 6). Responderlo es opcional y solo lo usamos para preparar tu cita.',
+        ],
+      },
+      {
+        heading: 'Con quién los compartimos',
+        paragraphs: [
+          'Solo con quienes nos ayudan a atenderte: Wompi para los pagos, la transportadora para las entregas y nuestro proveedor de alojamiento web. Nunca vendemos tus datos.',
+        ],
+        fictional: true,
+      },
+      {
+        heading: 'Cuánto tiempo los guardamos',
+        paragraphs: [
+          'Mientras tengas una cuenta o una compra activa con nosotros, y después solo el tiempo que exijan las normas contables y tributarias.',
+        ],
+        fictional: true,
       },
       {
         heading: 'Tus derechos',
-        paragraphs: [
-          'Como titular puedes conocer, actualizar, rectificar y solicitar la supresión de tus datos, así como revocar la autorización otorgada.',
-          'Canal y plazos de atención de solicitudes: pendientes de definir.',
+        paragraphs: ['Como titular de tus datos puedes (Ley 1581, art. 8):'],
+        items: [
+          'Conocerlos, actualizarlos y corregirlos.',
+          'Pedir prueba de la autorización que nos diste.',
+          'Saber cómo los hemos usado.',
+          'Revocar tu autorización o pedir que los borremos, salvo que la ley nos obligue a conservarlos.',
+          'Consultarlos gratis.',
+          'Presentar quejas ante la Superintendencia de Industria y Comercio.',
         ],
-        pending: true,
       },
       {
-        heading: 'Pagos',
-        paragraphs: ['Los pagos se procesan en la pasarela de Wompi. LUMINA no recibe ni almacena los datos de tu tarjeta.'],
+        heading: 'Cómo ejercerlos',
+        paragraphs: [
+          'Escríbenos desde Contacto. Respondemos las consultas en máximo 10 días hábiles y los reclamos (corregir, borrar o reportar un mal uso) en máximo 15 días hábiles (Ley 1581, arts. 14 y 15).',
+        ],
+      },
+      {
+        heading: 'Seguridad',
+        paragraphs: [
+          'Protegemos tus datos con medidas técnicas y administrativas. Los datos de tu tarjeta los procesa Wompi: LUMINA no los ve ni los guarda.',
+        ],
+      },
+      {
+        heading: 'Cambios a esta política',
+        paragraphs: ['Si la actualizamos, lo publicaremos en esta página y te avisaremos por correo cuando el cambio sea importante.'],
+        fictional: true,
       },
     ],
   },
@@ -168,7 +347,7 @@ export const infoPages: InfoPage[] = [
     slug: 'talla-y-ajuste',
     eyebrow: 'Guía',
     title: 'Talla y ajuste',
-    intro: 'Encuentra la montura que mejor se adapta a tu rostro.',
+    intro: 'Tres números, la forma de tu rostro y unas pocas señales: todo lo que necesitas para elegir la montura que mejor te queda.',
     sections: [],
     embed: 'size-guide',
   },
@@ -180,31 +359,11 @@ export const infoPages: InfoPage[] = [
     sections: [{ heading: 'Limpieza, estuche y ajustes', paragraphs: [P], pending: true }],
   },
   {
-    slug: 'examen-visual',
-    eyebrow: 'Servicios',
-    title: 'Examen visual',
-    intro: 'Cuidamos tu forma de ver.',
-    sections: [
-      {
-        heading: 'Cómo agendar',
-        paragraphs: ['Disponibilidad del servicio, profesionales, precio y canal de reserva: pendientes de definir.'],
-        pending: true,
-      },
-    ],
-  },
-  {
     slug: 'contacto',
     eyebrow: 'Ayuda',
     title: 'Contacto',
     intro: '¿Tienes dudas sobre una montura o un pedido? Escríbenos.',
     sections: [{ heading: 'Canales de atención', paragraphs: ['Correo, WhatsApp y horario de atención: pendientes.'], pending: true }],
-  },
-  {
-    slug: 'diario',
-    eyebrow: 'Diario LUMINA',
-    title: 'Historias para ver distinto',
-    intro: 'Artículos sobre diseño, color y cuidado visual.',
-    sections: [{ heading: 'Próximamente', paragraphs: ['El blog se publicará más adelante.'], pending: true }],
   },
 ];
 
@@ -221,6 +380,12 @@ export const faqs: { q: string; a: string }[] = [
     q: '¿Qué medios de pago aceptan?',
     a: 'Los pagos se procesan con Wompi: tarjeta, PSE, Nequi y botón Bancolombia. LUMINA no ve ni guarda los datos de tu tarjeta.',
   },
-  { q: '¿Cuánto cuesta el envío y cuánto tarda?', a: 'Pendiente de definir por LUMINA.' },
-  { q: '¿Puedo devolver mi compra?', a: 'Sí. Consulta la página de envíos y devoluciones (en preparación).' },
+  {
+    q: '¿Cuánto cuesta el envío y cuánto tarda?',
+    a: 'Es gratis a toda Colombia: 1 a 2 días hábiles en Bogotá, 2 a 4 en ciudades principales y 4 a 7 en el resto del país.',
+  },
+  {
+    q: '¿Puedo devolver mi compra?',
+    a: 'Sí. Tienes 5 días hábiles desde la entrega para retractarte (Ley 1480) y 30 días para cambiar tu montura. Detalles en Envíos y devoluciones.',
+  },
 ];

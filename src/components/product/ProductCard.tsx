@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../../types/product';
 import { formatPrice } from '../../lib/format';
+import { FavoriteButton } from './FavoriteButton';
 import { FrameIllustration } from './FrameIllustration';
 import { Swatches } from './Swatches';
 import styles from './ProductCard.module.css';
 
 /*
  * Tarjeta de producto (anatomía de la referencia):
- * imagen con segunda vista al pasar el ratón · "Elige opciones" · nombre · precio · muestras de color.
+ * imagen con segunda vista al pasar el ratón · corazón de favoritos · "Elige opciones" · nombre · precio · muestras de color.
  * Elegir una muestra cambia la imagen y el enlace apunta a ese color.
  */
 interface ProductCardProps {
@@ -41,6 +42,7 @@ export function ProductCard({ product, initialColorId }: ProductCardProps) {
           Elige opciones
         </span>
       </Link>
+      <FavoriteButton product={product} color={color} className={styles.favorite} />
 
       <div className={styles.info}>
         <h3 className={styles.name}>

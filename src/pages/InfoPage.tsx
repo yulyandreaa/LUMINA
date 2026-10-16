@@ -1,7 +1,7 @@
 import type { InfoPage as InfoPageData } from '../data/pages';
 import { faqs } from '../data/pages';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { SizeGuide } from '../components/product/SizeGuide';
+import { FitGuide } from '../components/fit/FitGuide';
 import { Accordion } from '../components/ui/Accordion';
 import { Eyebrow } from '../components/ui/Eyebrow';
 import styles from './InfoPage.module.css';
@@ -18,7 +18,8 @@ export function InfoPage({ page }: { page: InfoPageData }) {
         <p className={styles.intro}>{page.intro}</p>
         {page.legalReview && (
           <p className={styles.review} role="note">
-            Borrador estructural: este texto debe completarse y revisarse con asesoría legal antes de publicar la tienda.
+            {page.reviewNote ??
+              'Borrador estructural: este texto debe completarse y revisarse con asesoría legal antes de publicar la tienda.'}
           </p>
         )}
       </header>
@@ -33,10 +34,17 @@ export function InfoPage({ page }: { page: InfoPageData }) {
             {s.paragraphs.map((p) => (
               <p key={p}>{p}</p>
             ))}
+            {s.items && (
+              <ul className={styles.items}>
+                {s.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            )}
           </section>
         ))}
 
-        {page.embed === 'size-guide' && <SizeGuide category="monturas" />}
+        {page.embed === 'size-guide' && <FitGuide />}
 
         {page.embed === 'faq' && (
           <Accordion group="faq" items={faqs.map((f, i) => ({ id: `faq-${i}`, title: f.q, content: <p>{f.a}</p> }))} />

@@ -1,10 +1,15 @@
 import { useState, type FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../cart/CartContext';
-import { customerSchema, departments, legalIdTypes, type CheckoutResponse } from '../lib/checkoutSchema';
+import { useAuth } from '../auth/AuthContext';
+import { useAccountData } from '../auth/useAccountData';
+import { customerSchema, departments, legalIdTypes, type CheckoutResponse, type CustomerInput } from '../lib/checkoutSchema';
+import { PAYMENT_MODE, paymentMethods, placeSimulatedOrder } from '../lib/simulatedPayment';
+import type { PaymentMethod } from '../data/adminOrders';
+import { Dialog } from '../components/ui/Dialog';
 import { formatPrice } from '../lib/format';
 import { sizeGuide } from '../data/sizes';
-import { FrameIllustration } from '../components/product/FrameIllustration';
+import { ProductThumb } from '../components/product/ProductThumb';
 import { Field } from '../components/ui/Field';
 import { controlClass } from '../components/ui/fieldStyles';
 import { Button } from '../components/ui/Button';
@@ -18,14 +23,24 @@ import styles from './CheckoutPage.module.css';
  * 2. Envía cesta + datos a /api/checkout (solo ids y cantidades, nunca precios).
  * 3. El servidor devuelve la URL de pago de Wompi y redirigimos allí.
  * La cesta NO se vacía aquí: solo cuando el pago se confirma.
+ * Mientras Wompi no esté configurado (PAYMENT_MODE = 'simulado'), el paso 2-3 es una ventana
+ * de "Pago de prueba": se elige el medio y se aprueba o rechaza, sin cobro real.
+ * Con sesión iniciada, el formulario llega prellenado con los datos de la cuenta.
  */
 type Errors = Partial<Record<string, string>>;
 type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'error'; message: string };
 
 export function CheckoutPage() {
-  const { lines, subtotal, count } = useCart();
+  const { lines, subtotal, count, clear } = useCart();
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
+  // Datos validados esperando la decisión en la ventana de pago de prueba.
+  const [pending, setPending] = useState<CustomerInput | null>(null);
+  const navigate = useNavigate();
+  const { customer } = useAuth();
+  const { data: account } = useAccountData();
+  const profile = account.profile;
+  const address = account.addresses.find((a) => a.isDefault) ?? account.addresses[0];
   usePageTitle('Finalizar compra');
 
   if (lines.length === 0) {
@@ -61,6 +76,11 @@ export function CheckoutPage() {
     }
 
     setErrors({});
+    if (PAYMENT_MODE === 'simulado') {
+      setStatus({ kind: 'idle' });
+      setPending(parsed.data);
+      return;
+    }
     setStatus({ kind: 'submitting' });
     try {
       const res = await fetch('/api/checkout', {
@@ -84,6 +104,21 @@ export function CheckoutPage() {
 
   const submitting = status.kind === 'submitting';
 
+  const approve = (method: PaymentMethod) => {
+    if (!pending) return;
+    const order = placeSimulatedOrder(pending, lines, method);
+    clear();
+    navigate(`/pedido/resultado?simulado=${order.id}`, { replace: true });
+  };
+
+  const decline = () => {
+    setPending(null);
+    setStatus({
+      kind: 'error',
+      message: 'El pago fue rechazado (prueba). No se hizo ningún cobro y tu cesta sigue guardada: puedes intentarlo de nuevo.',
+    });
+  };
+
   return (
     <section className={`container ${styles.page}`}>
       <header className={styles.head}>
@@ -100,15 +135,21 @@ export function CheckoutPage() {
           <fieldset className={styles.fieldset} disabled={submitting}>
             <legend className={styles.legend}>Contacto</legend>
             <Field id="email" label="Correo electrónico" error={errors.email} hint="Te enviaremos la confirmación del pedido.">
-              {(a) => <input {...a} name="email" type="email" autoComplete="email" className={controlClass} />}
+              {(a) => <input {...a} name="email" type="email" autoComplete="email" defaultValue={customer?.email} className={controlClass} />}
             </Field>
             <Field id="fullName" label="Nombre completo" error={errors.fullName}>
-              {(a) => <input {...a} name="fullName" autoComplete="name" className={controlClass} />}
+              {(a) => <input
+                  {...a}
+                  name="fullName"
+                  autoComplete="name"
+                  defaultValue={[profile.firstName, profile.lastName].filter(Boolean).join(' ') || undefined}
+                  className={controlClass}
+                />}
             </Field>
             <div className={styles.row}>
               <Field id="legalIdType" label="Tipo de documento" error={errors.legalIdType}>
                 {(a) => (
-                  <select {...a} name="legalIdType" defaultValue="CC" className={controlClass}>
+                  <select {...a} name="legalIdType" defaultValue={profile.legalIdType ?? 'CC'} className={controlClass}>
                     {legalIdTypes.map((t) => (
                       <option key={t.value} value={t.value}>
                         {t.label}
@@ -118,11 +159,11 @@ export function CheckoutPage() {
                 )}
               </Field>
               <Field id="legalId" label="Número de documento" error={errors.legalId}>
-                {(a) => <input {...a} name="legalId" inputMode="numeric" className={controlClass} />}
+                {(a) => <input {...a} name="legalId" inputMode="numeric" defaultValue={profile.legalId} className={controlClass} />}
               </Field>
             </div>
             <Field id="phone" label="Teléfono celular" error={errors.phone}>
-              {(a) => <input {...a} name="phone" type="tel" autoComplete="tel-national" placeholder="300 123 4567" className={controlClass} />}
+              {(a) => <input {...a} name="phone" type="tel" autoComplete="tel-national" placeholder="300 123 4567" defaultValue={profile.phone} className={controlClass} />}
             </Field>
           </fieldset>
 
@@ -131,7 +172,7 @@ export function CheckoutPage() {
             <div className={styles.row}>
               <Field id="region" label="Departamento" error={errors.region}>
                 {(a) => (
-                  <select {...a} name="region" defaultValue="" autoComplete="address-level1" className={controlClass}>
+                  <select {...a} name="region" defaultValue={address?.region ?? ''} autoComplete="address-level1" className={controlClass}>
                     <option value="" disabled>
                       Elige…
                     </option>
@@ -144,14 +185,14 @@ export function CheckoutPage() {
                 )}
               </Field>
               <Field id="city" label="Ciudad o municipio" error={errors.city}>
-                {(a) => <input {...a} name="city" autoComplete="address-level2" className={controlClass} />}
+                {(a) => <input {...a} name="city" autoComplete="address-level2" defaultValue={address?.city} className={controlClass} />}
               </Field>
             </div>
             <Field id="address" label="Dirección" error={errors.address}>
-              {(a) => <input {...a} name="address" autoComplete="address-line1" placeholder="Calle 10 # 43-20" className={controlClass} />}
+              {(a) => <input {...a} name="address" autoComplete="address-line1" placeholder="Calle 10 # 43-20" defaultValue={address?.address} className={controlClass} />}
             </Field>
             <Field id="address2" label="Apartamento, torre, barrio" optional error={errors.address2}>
-              {(a) => <input {...a} name="address2" autoComplete="address-line2" className={controlClass} />}
+              {(a) => <input {...a} name="address2" autoComplete="address-line2" defaultValue={address?.address2} className={controlClass} />}
             </Field>
           </fieldset>
 
@@ -184,8 +225,17 @@ export function CheckoutPage() {
             {submitting ? 'Conectando con la pasarela…' : `Pagar ${formatPrice(subtotal)}`}
           </Button>
           <p className={styles.secure}>
-            Serás redirigido a <strong>Wompi</strong> para pagar con tarjeta, PSE, Nequi o Bancolombia. LUMINA no ve ni
-            guarda los datos de tu tarjeta.
+            {PAYMENT_MODE === 'simulado' ? (
+              <>
+                <strong>Pago de prueba:</strong> no se hace ningún cobro. Eliges el medio de pago y si se aprueba o se
+                rechaza.
+              </>
+            ) : (
+              <>
+                Serás redirigido a <strong>Wompi</strong> para pagar con tarjeta, PSE, Nequi o Bancolombia. LUMINA no ve
+                ni guarda los datos de tu tarjeta.
+              </>
+            )}
           </p>
         </form>
 
@@ -197,7 +247,7 @@ export function CheckoutPage() {
             {lines.map((l) => (
               <li key={l.key} className={styles.item}>
                 <span className={styles.thumb}>
-                  <FrameIllustration shape={l.product.shape} color={l.color.hex} sun={l.product.category === 'gafas-de-sol'} />
+                  <ProductThumb product={l.product} color={l.color} />
                   <span className={styles.qty}>{l.quantity}</span>
                 </span>
                 <span className={styles.itemInfo}>
@@ -217,16 +267,60 @@ export function CheckoutPage() {
             </div>
             <div>
               <dt>Envío</dt>
-              <dd>Pendiente de definir</dd>
+              <dd>Gratis</dd>
             </div>
             <div className={styles.total}>
               <dt>Total</dt>
               <dd>{formatPrice(subtotal)} COP</dd>
             </div>
           </dl>
-          <p className={styles.note}>Productos y precios ficticios · Entorno de pruebas (sandbox).</p>
+          <p className={styles.note}>
+            {PAYMENT_MODE === 'simulado' ? 'Pago de prueba (simulación).' : 'Entorno de pruebas (sandbox).'}
+          </p>
         </aside>
       </div>
+
+      <Dialog open={!!pending} onClose={() => setPending(null)} title="Pago de prueba">
+        {pending && <TestPayment total={subtotal} onApprove={approve} onDecline={decline} />}
+      </Dialog>
     </section>
+  );
+}
+
+/* Ventana del pago simulado: medio de pago + aprobar o rechazar. */
+function TestPayment({
+  total,
+  onApprove,
+  onDecline,
+}: {
+  total: number;
+  onApprove: (method: PaymentMethod) => void;
+  onDecline: () => void;
+}) {
+  const [method, setMethod] = useState<PaymentMethod>('Tarjeta');
+  return (
+    <div className={styles.testPay}>
+      <p>
+        Total: <strong>{formatPrice(total)} COP</strong>
+      </p>
+      <fieldset className={styles.testMethods}>
+        <legend className={styles.legend}>Medio de pago</legend>
+        {paymentMethods.map((m) => (
+          <label key={m} className={styles.testMethod}>
+            <input type="radio" name="testMethod" checked={method === m} onChange={() => setMethod(m)} />
+            {m}
+          </label>
+        ))}
+      </fieldset>
+      <p className={styles.secure}>Simulación: no se pide ningún dato de tarjeta ni se hace ningún cobro.</p>
+      <div className={styles.testActions}>
+        <Button onClick={() => onApprove(method)} withArrow>
+          Aprobar pago
+        </Button>
+        <button type="button" className={styles.testDecline} onClick={onDecline}>
+          Rechazar pago
+        </button>
+      </div>
+    </div>
   );
 }
