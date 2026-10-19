@@ -40,6 +40,18 @@
   overflow-x: auto;
   border-bottom: 1px solid var(--color-border);
   scrollbar-width: none;
+  scroll-padding-inline: var(--space-8);
+}
+
+/* Celular y tablet: fundido a la derecha para indicar que las pestañas se deslizan */
+@media (max-width: 1023px) {
+  .nav {
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .nav[data-at-end='true'] {
+    mask-image: none;
+  }
 }
 
 .navLink {

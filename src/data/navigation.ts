@@ -8,6 +8,15 @@ import menuMonturasTodo from '../assets/photos/menu-monturas-todo.jpg';
 import menuMonturasVendidos from '../assets/photos/menu-monturas-vendidos.jpg';
 import menuSolTodo from '../assets/photos/menu-sol-todo.jpg';
 import menuSolVendidos from '../assets/photos/menu-sol-vendidos.jpg';
+import { products } from './products';
+import type { Product } from '../types/product';
+
+/**
+ * ¿Hay algún producto visible de esa categoría ("/monturas" → monturas) que cumpla la condición?
+ * El megamenú solo ofrece opciones con productos: nunca un filtro que da cero resultados.
+ */
+const offered = (base: string, has: (p: Product) => boolean) =>
+  products.some((p) => `/${p.category}` === base && has(p));
 
 export interface NavLink {
   label: string;
@@ -37,7 +46,9 @@ const byColor = (base: string): NavColumn => ({
     ['Cristal', 'cristal'],
     ['Rosa', 'rosa'],
     ['Dorado', 'dorado'],
-  ].map(([label, id]) => ({ label, href: `${base}?color=${id}` })),
+  ]
+    .filter(([, id]) => offered(base, (p) => p.colors.some((c) => c.id === id)))
+    .map(([label, id]) => ({ label, href: `${base}?color=${id}` })),
 });
 
 const byShape = (base: string): NavColumn => ({
@@ -48,7 +59,9 @@ const byShape = (base: string): NavColumn => ({
     ['Aviador', 'aviador'],
     ['Cat-eye', 'cat-eye'],
     ['Geométrica', 'geometrica'],
-  ].map(([label, id]) => ({ label, href: `${base}?forma=${id}` })),
+  ]
+    .filter(([, id]) => offered(base, (p) => p.shape === id))
+    .map(([label, id]) => ({ label, href: `${base}?forma=${id}` })),
 });
 
 const bySize = (base: string): NavColumn => ({
@@ -58,7 +71,9 @@ const bySize = (base: string): NavColumn => ({
     ['Media', 'media'],
     ['Ancha', 'ancha'],
     ['Extra ancha', 'extra-ancha'],
-  ].map(([label, id]) => ({ label, href: `${base}?talla=${id}` })),
+  ]
+    .filter(([, id]) => offered(base, (p) => p.sizes.some((s) => s === id)))
+    .map(([label, id]) => ({ label, href: `${base}?talla=${id}` })),
 });
 
 const categoryColumn = (base: string, label: string): NavColumn => ({

@@ -12,7 +12,7 @@ export function VisitUs({ image }: { image: string }) {
           <Eyebrow>Visítanos</Eyebrow>
           <h2 className={styles.title}>Cuidamos tu forma de ver.</h2>
           <p className={styles.text}>
-            Pruébate las monturas en persona y recibe asesoría de ajuste. Ubicación y horarios: pendientes de confirmar.
+            Pruébate las monturas en persona y recibe asesoría de ajuste en nuestras 3 tiendas de Bogotá, de 10:00 a. m. a 7:00 p. m.
           </p>
           <div className={styles.actions}>
             <Button to="/examen-visual" variant="secondary" withArrow className={styles.button}>

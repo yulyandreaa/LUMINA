@@ -148,3 +148,18 @@
   font-size: var(--text-sm);
   line-height: 1.55;
 }
+
+/* Tablet (3 columnas angostas): menos margen interno y texto un punto menor para que no se corte. */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .card {
+    padding: 12% 9% 0;
+  }
+
+  .title {
+    font-size: var(--text-sm);
+  }
+
+  .text {
+    font-size: var(--text-xs);
+  }
+}

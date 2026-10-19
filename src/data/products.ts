@@ -1,5 +1,6 @@
 import type { ColorVariant, Product } from '../types/product';
 import { applyOverrides } from '../admin/catalogOverrides';
+import { readCustomProducts } from '../admin/customProducts';
 
 /*
  * ⚠️ CATÁLOGO FICTICIO.
@@ -7,7 +8,8 @@ import { applyOverrides } from '../admin/catalogOverrides';
  * NO representan productos, precios ni inventario reales de LUMINA.
  */
 
-const C = {
+/** Colores de acetato del catálogo (también se ofrecen al subir un producto). */
+export const colorPalette = {
   borgona: { id: 'borgona', name: 'Borgoña', hex: '#861f26' },
   vino: { id: 'vino', name: 'Vino', hex: '#4a1f24' },
   rosa: { id: 'rosa', name: 'Rosa empolvado', hex: '#d7a6a0' },
@@ -17,6 +19,7 @@ const C = {
   arena: { id: 'arena', name: 'Arena', hex: '#c9b8a6' },
   dorado: { id: 'dorado', name: 'Dorado', hex: '#b08d57' },
 } satisfies Record<string, ColorVariant>;
+const C = colorPalette;
 
 /* Fotos de producto generadas con IA (Magnific), una por color: public/products/<slug>-<color>.jpg */
 const photo = (color: ColorVariant, slug: string): ColorVariant => ({
@@ -145,8 +148,8 @@ export const baseProducts: Product[] = [
   },
 ];
 
-/** Catálogo con los cambios del panel (precio, etiquetas, inventario), incluidos los ocultos. */
-export const allProducts = applyOverrides(baseProducts);
+/** Catálogo con los productos subidos y los cambios del panel (precio, etiquetas, inventario), incluidos los ocultos. */
+export const allProducts = applyOverrides([...baseProducts, ...readCustomProducts()]);
 
 /** Lo que ve la tienda: sin productos ocultos. */
 export const products = allProducts.filter((p) => !p.hidden);

@@ -1,4 +1,5 @@
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   applyOverrides,
   readOverrides,
@@ -7,6 +8,7 @@ import {
   type Overrides,
   type ProductOverride,
 } from '../../admin/catalogOverrides';
+import { isCustomProduct, readCustomProducts, writeCustomProducts } from '../../admin/customProducts';
 import { baseProducts } from '../../data/products';
 import { sizeGuide } from '../../data/sizes';
 import { normalize } from '../../lib/catalog';
@@ -24,6 +26,8 @@ import styles from './Admin.module.css';
  * Al abrir un producto: precio, visible en la tienda, etiquetas (Nuevo / Más vendido)
  * y unidades por color y talla. Una casilla vacía = inventario sin registrar (se puede vender).
  * Con 0 unidades la tienda muestra esa variante como agotada.
+ * "Subir producto" lleva a su propia página (AdminNewProductPage); al volver (?nuevo=id) se abre el producto
+ * para registrar su inventario. Los productos subidos se pueden eliminar.
  */
 type CategoryFilter = Category | 'todos';
 type AlertFilter = 'agotados' | 'bajo' | null;
@@ -78,13 +82,41 @@ export function AdminProductsPage() {
   const [overrides, setOverrides] = useState<Overrides>(readOverrides);
   const [category, setCategory] = useState<CategoryFilter>('todos');
   const [query, setQuery] = useState('');
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [params, setParams] = useSearchParams();
+  const [openId, setOpenId] = useState<string | null>(() => params.get('nuevo'));
   const [alert, setAlert] = useState<AlertFilter>(null);
   const [lowStock, setLowStock] = useState(readThreshold);
   // Producto recién guardado (el editor se vuelve a montar con los valores guardados).
   const [savedId, setSavedId] = useState<string | null>(null);
+  const [custom, setCustom] = useState<Product[]>(readCustomProducts);
+  const [createdId, setCreatedId] = useState<string | null>(() => params.get('nuevo'));
 
-  const catalog = useMemo(() => applyOverrides(baseProducts, overrides), [overrides]);
+  // Quita ?nuevo= de la dirección una vez abierto el producto recién subido.
+  useEffect(() => {
+    if (params.has('nuevo')) setParams({}, { replace: true });
+  }, [params, setParams]);
+
+  const sources = useMemo(() => [...baseProducts, ...custom], [custom]);
+  const catalog = useMemo(() => applyOverrides(sources, overrides), [sources, overrides]);
+
+  const openProduct = (id: string) => {
+    setOpenId(id);
+    setSavedId(null);
+    setCreatedId(null);
+  };
+
+  const remove = (id: string) => {
+    const next = custom.filter((p) => p.id !== id);
+    writeCustomProducts(next);
+    setCustom(next);
+    setOverrides((prev) => {
+      const rest = { ...prev };
+      delete rest[id];
+      writeOverrides(rest);
+      return rest;
+    });
+    setOpenId(null);
+  };
 
   const save = (id: string, override: ProductOverride | null) => {
     setOverrides((prev) => {
@@ -142,7 +174,7 @@ export function AdminProductsPage() {
   return (
     <>
       <AdminHead title="Productos e inventario">
-        <p className={styles.demoNote}>Los cambios se ven en la tienda al recargarla.</p>
+        <Button to="/admin/productos/nuevo">Subir producto</Button>
       </AdminHead>
 
       <ul className={styles.kpis}>
@@ -196,22 +228,6 @@ export function AdminProductsPage() {
         </li>
       </ul>
 
-      <label className={styles.thresholdField}>
-        <span>Avisar stock bajo con</span>
-        <select
-          className={`${controlClass} ${styles.thresholdSelect}`}
-          value={lowStock}
-          onChange={(e) => changeThreshold(Number(e.target.value))}
-        >
-          {thresholdOptions.map((n) => (
-            <option key={n} value={n}>
-              {n}
-            </option>
-          ))}
-        </select>
-        <span>unidades o menos</span>
-      </label>
-
       {alert && (
         <section className={styles.alertPanel} aria-live="polite">
           <div className={styles.alertHead}>
@@ -234,10 +250,7 @@ export function AdminProductsPage() {
                   <button
                     type="button"
                     className={styles.alertRow}
-                    onClick={() => {
-                      setOpenId(r.product.id);
-                      setSavedId(null);
-                    }}
+                    onClick={() => openProduct(r.product.id)}
                   >
                     {r.image ? <img src={r.image} alt="" className={styles.thumbSm} /> : <span className={styles.thumbSm} />}
                     <strong>{r.product.name}</strong>
@@ -255,7 +268,7 @@ export function AdminProductsPage() {
         </section>
       )}
 
-      <div className={styles.toolbar}>
+      <div className={styles.toolbarRow}>
         <input
           type="search"
           className={`${controlClass} ${styles.search}`}
@@ -277,6 +290,21 @@ export function AdminProductsPage() {
             </button>
           ))}
         </div>
+          <label className={styles.thresholdField}>
+            <span>Avisar stock bajo con</span>
+            <select
+              className={`${controlClass} ${styles.thresholdSelect}`}
+              value={lowStock}
+              onChange={(e) => changeThreshold(Number(e.target.value))}
+            >
+              {thresholdOptions.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+            <span>unidades o menos</span>
+          </label>
       </div>
 
       <div className={styles.tableWrap}>
@@ -304,13 +332,11 @@ export function AdminProductsPage() {
                     <button
                       type="button"
                       className={styles.productCell}
-                      onClick={() => {
-                        setOpenId(p.id);
-                        setSavedId(null);
-                      }}
+                      onClick={() => openProduct(p.id)}
                     >
                       <img src={p.colors[0].image} alt="" className={styles.thumbSm} />
                       <span className={styles.rowLink}>{p.name}</span>
+                      {isCustomProduct(p.id) && <span className={styles.newTag}>Subido</span>}
                     </button>
                   </td>
                   <td className={styles.muted}>{categoryLabels[p.category]}</td>
@@ -329,6 +355,7 @@ export function AdminProductsPage() {
                         Stock bajo
                       </span>
                     )}
+                    {s.soldOut.length === 0 && s.low.length === 0 && <span className={styles.muted}>—</span>}
                   </td>
                   <td>
                     <button
@@ -350,16 +377,21 @@ export function AdminProductsPage() {
         </table>
       </div>
 
-      <Drawer open={!!open} onClose={() => setOpenId(null)} title={open ? open.name : 'Producto'}>
+      <Drawer open={!!open} onClose={() => setOpenId(null)} title={open ? open.name : 'Producto'} size="wide">
         {open && (
           <ProductEditor
             key={`${open.id}-${JSON.stringify(overrides[open.id] ?? {})}`}
             product={open}
-            base={baseProducts.find((b) => b.id === open.id)!}
+            base={sources.find((b) => b.id === open.id)!}
             hasChanges={!!overrides[open.id]}
             justSaved={savedId === open.id}
+            justCreated={createdId === open.id}
             lowStock={lowStock}
-            onSave={(o) => save(open.id, o)}
+            onSave={(o) => {
+              setCreatedId(null);
+              save(open.id, o);
+            }}
+            onDelete={isCustomProduct(open.id) ? () => remove(open.id) : undefined}
           />
         )}
       </Drawer>
@@ -372,15 +404,20 @@ function ProductEditor({
   base,
   hasChanges,
   justSaved,
+  justCreated,
   lowStock,
   onSave,
+  onDelete,
 }: {
   product: Product;
   base: Product;
   hasChanges: boolean;
   justSaved: boolean;
+  justCreated: boolean;
   lowStock: number;
   onSave: (override: ProductOverride | null) => void;
+  /** Solo para productos subidos desde el panel. */
+  onDelete?: () => void;
 }) {
   const [price, setPrice] = useState(String(p.price));
   const [hidden, setHidden] = useState(!!p.hidden);
@@ -414,12 +451,21 @@ function ProductEditor({
     onSave(Object.keys(override).length ? override : null);
   };
 
+  const confirmDelete = () => {
+    if (window.confirm(`¿Eliminar ${p.name}? Desaparece de la tienda y se borran sus fotos e inventario.`)) onDelete?.();
+  };
+
   const reset = () => {
     if (window.confirm(`¿Volver ${p.name} a los valores originales? Se borra el inventario registrado.`)) onSave(null);
   };
 
   return (
     <form className={styles.detail} onSubmit={submit} noValidate>
+      {justCreated && (
+        <p className={styles.successNote} role="status">
+          Producto subido con su inventario. Desde aquí puedes ajustar precio, etiquetas y unidades.
+        </p>
+      )}
       <a href={`/producto/${p.slug}`} target="_blank" rel="noreferrer" className={styles.link}>
         Ver en la tienda ↗
       </a>
@@ -440,36 +486,38 @@ function ProductEditor({
         ))}
       </ul>
 
-      <section className={styles.detailBlock}>
-        <h2 className={styles.detailTitle}>Precio (COP, IVA incluido)</h2>
-        <input
-          className={controlClass}
-          inputMode="numeric"
-          value={price}
-          onChange={(e) => setPrice(e.target.value.replace(/\D/g, ''))}
-          aria-label="Precio en pesos"
-        />
-        <p className={styles.muted}>
-          {formatPrice(Number(price) || 0)}
-          {Number(price) !== base.price && ` · antes ${formatPrice(base.price)}`}
-        </p>
-      </section>
+      <div className={styles.editorRow}>
+        <section className={styles.detailBlock}>
+          <h2 className={styles.detailTitle}>Precio (COP, IVA incluido)</h2>
+          <input
+            className={controlClass}
+            inputMode="numeric"
+            value={price}
+            onChange={(e) => setPrice(e.target.value.replace(/\D/g, ''))}
+            aria-label="Precio en pesos"
+          />
+          <p className={styles.muted}>
+            {formatPrice(Number(price) || 0)}
+            {Number(price) !== base.price && ` · antes ${formatPrice(base.price)}`}
+          </p>
+        </section>
 
-      <section className={styles.detailBlock}>
-        <h2 className={styles.detailTitle}>En la tienda</h2>
-        <label className={styles.check}>
-          <input type="checkbox" checked={!hidden} onChange={(e) => setHidden(!e.target.checked)} />
-          Visible en la tienda
-        </label>
-        <label className={styles.check}>
-          <input type="checkbox" checked={isNew} onChange={(e) => setIsNew(e.target.checked)} />
-          Etiqueta "Nuevo"
-        </label>
-        <label className={styles.check}>
-          <input type="checkbox" checked={bestSeller} onChange={(e) => setBestSeller(e.target.checked)} />
-          Etiqueta "Más vendido"
-        </label>
-      </section>
+        <section className={styles.detailBlock}>
+          <h2 className={styles.detailTitle}>En la tienda</h2>
+          <label className={styles.check}>
+            <input type="checkbox" checked={!hidden} onChange={(e) => setHidden(!e.target.checked)} />
+            Visible en la tienda
+          </label>
+          <label className={styles.check}>
+            <input type="checkbox" checked={isNew} onChange={(e) => setIsNew(e.target.checked)} />
+            Etiqueta "Nuevo"
+          </label>
+          <label className={styles.check}>
+            <input type="checkbox" checked={bestSeller} onChange={(e) => setBestSeller(e.target.checked)} />
+            Etiqueta "Más vendido"
+          </label>
+        </section>
+      </div>
 
       <section className={styles.detailBlock}>
         <h2 className={styles.detailTitle}>Inventario por color y talla</h2>
@@ -546,6 +594,11 @@ function ProductEditor({
         {hasChanges && (
           <button type="button" className={styles.textButton} onClick={reset}>
             Volver a los valores originales
+          </button>
+        )}
+        {onDelete && (
+          <button type="button" className={styles.textButton} onClick={confirmDelete}>
+            Eliminar producto
           </button>
         )}
       </div>

@@ -1,5 +1,6 @@
 .gallery {
   display: grid;
+  align-self: start; /* no se estira a la altura de la columna de compra (las flechas quedan sobre la foto) */
   gap: var(--space-3);
   min-width: 0;
 }

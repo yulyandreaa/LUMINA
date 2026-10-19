@@ -30,25 +30,7 @@ export interface InfoPage {
   embed?: 'size-guide' | 'faq';
 }
 
-const P = 'Pendiente de redactar por LUMINA.';
-
 export const infoPages: InfoPage[] = [
-  {
-    slug: 'nosotros',
-    eyebrow: 'Nuestra historia',
-    title: 'Una nueva perspectiva.',
-    intro: 'LUMINA es una óptica contemporánea: diseño editorial, cercanía y cuidado por cómo ves el mundo.',
-    sections: [
-      {
-        heading: 'Ver bien también es sentir bien',
-        paragraphs: [
-          'Creemos que unas gafas son mucho más que un accesorio: son la forma en la que miras y te miran.',
-          'Historia, equipo y origen de la marca: pendientes de redactar por LUMINA.',
-        ],
-        pending: true,
-      },
-    ],
-  },
   {
     slug: 'envios-y-devoluciones',
     eyebrow: 'Ayuda',
@@ -356,14 +338,52 @@ export const infoPages: InfoPage[] = [
     eyebrow: 'Guía',
     title: 'Cuidado de tus gafas',
     intro: 'Pequeños gestos que alargan la vida de tus monturas.',
-    sections: [{ heading: 'Limpieza, estuche y ajustes', paragraphs: [P], pending: true }],
+    // Mismo contenido que el artículo del Diario "Cuidar tus gafas, paso a paso" (fuentes: Which?, NBC Select).
+    sections: [
+      {
+        heading: 'La rutina de limpieza',
+        paragraphs: ['La mayoría de los rayones no vienen de una caída, sino de limpiar mal las lentes día tras día.'],
+        items: [
+          'Enjuaga primero con agua tibia, nunca caliente: el polvo y la arena son los que rayan.',
+          'Si hace falta, usa un limpiador de lentes sin alcohol o muy poco jabón suave, y frota con los dedos.',
+          'Enjuaga de nuevo y sacude el exceso de agua.',
+          'Seca con un paño de microfibra limpio, con movimientos suaves.',
+        ],
+      },
+      {
+        heading: 'Lo que es mejor evitar',
+        paragraphs: [],
+        items: [
+          'Papel higiénico, servilletas o toallas de papel: tienen fibras que pueden rayar.',
+          'La camiseta o el borde de la ropa: arrastran polvo.',
+          'Limpiavidrios y productos de la casa: pueden dañar los recubrimientos de las lentes.',
+        ],
+      },
+      {
+        heading: 'Montura y estuche',
+        paragraphs: [
+          'Limpia también las plaquetas y las bisagras, donde se acumula grasa. Cuando no las uses, guárdalas en su estuche y nunca las dejes boca abajo sobre las lentes ni en el tablero del carro al sol.',
+        ],
+      },
+    ],
   },
   {
     slug: 'contacto',
     eyebrow: 'Ayuda',
     title: 'Contacto',
-    intro: '¿Tienes dudas sobre una montura o un pedido? Escríbenos.',
-    sections: [{ heading: 'Canales de atención', paragraphs: ['Correo, WhatsApp y horario de atención: pendientes.'], pending: true }],
+    intro: '¿Tienes dudas sobre una montura o un pedido? Te ayudamos.',
+    sections: [
+      {
+        heading: 'En nuestras tiendas',
+        paragraphs: ['Te atendemos en persona en nuestras 3 tiendas de Bogotá: Quinta Camacho, Usaquén y Parque 93.'],
+        items: ['Teléfono: 1234567892', 'Horario: 10:00 a. m. – 7:00 p. m.'],
+      },
+      {
+        heading: 'Examen visual',
+        paragraphs: ['Puedes agendar tu examen visual desde la página Examen visual, eligiendo la tienda, el día y la hora.'],
+      },
+      { heading: 'Correo y WhatsApp', paragraphs: ['Pendientes de confirmar por LUMINA.'], pending: true },
+    ],
   },
 ];
 

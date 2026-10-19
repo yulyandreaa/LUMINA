@@ -3,6 +3,7 @@ import { Link, Navigate, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import { useAccountData } from '../../auth/useAccountData';
 import { Eyebrow } from '../../components/ui/Eyebrow';
+import { useTabStrip } from '../../hooks/useTabStrip';
 import styles from './Account.module.css';
 
 /*
@@ -22,6 +23,7 @@ export function AccountLayout() {
   const { customer, signOut } = useAuth();
   const { data } = useAccountData();
   const { pathname } = useLocation();
+  const navRef = useTabStrip<HTMLElement>();
   // Solo el nombre: un saludo más cercano ("Hola, Yuly").
   const firstName = data.profile.firstName?.trim().split(/\s+/)[0];
 
@@ -37,7 +39,7 @@ export function AccountLayout() {
             Agrega tu nombre
           </Link>
         )}
-        <nav className={styles.nav} aria-label="Secciones de mi cuenta">
+        <nav ref={navRef} className={styles.nav} aria-label="Secciones de mi cuenta">
           {sections.map((s) => (
             <NavLink key={s.to} to={s.to} className={({ isActive }) => (isActive ? `${styles.navLink} ${styles.current}` : styles.navLink)}>
               {s.label}

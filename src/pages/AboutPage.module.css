@@ -1,0 +1,190 @@
+/* Portada: título sobre marfil y, debajo, el collage a sangre. */
+.hero {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  padding-block: var(--space-16) var(--space-10);
+}
+
+.heroTitle {
+  color: var(--color-accent);
+  font-size: var(--text-3xl);
+  line-height: 1;
+}
+
+.heroIntro {
+  max-width: 48ch;
+  font-size: var(--text-md);
+}
+
+/*
+ * Collage. Móvil: rejilla de 2 columnas con fotos cuadradas.
+ * Desde tableta: dos filas como el original; cada foto crece según su ancho relativo (flex-grow).
+ */
+.collage {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+
+.collageRow {
+  display: contents;
+}
+
+.collagePhoto {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.title {
+  color: var(--color-accent);
+  font-size: var(--text-xl);
+}
+
+/* Origen: texto + foto (una columna en móvil, dos desde tableta). */
+.origin {
+  display: grid;
+  gap: var(--space-10);
+  align-items: center;
+  padding-block: var(--space-24) var(--space-8);
+}
+
+.originText {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: 34rem;
+  font-size: var(--text-md);
+  line-height: 1.7;
+}
+
+.originImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.sectionHead {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+
+/* Valores: 1 → 2 → 4 columnas. */
+.values,
+.paths {
+  display: grid;
+  gap: var(--space-10);
+  padding-block: var(--space-8) var(--space-16);
+}
+
+.valueGrid,
+.pathGrid {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.value {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding-top: var(--space-6);
+  border-top: var(--border-hairline);
+}
+
+.valueIcon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+
+.valueTitle {
+  font-size: var(--text-lg);
+}
+
+.value p,
+.pathCard p {
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.pathCard {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.pathImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: var(--space-2);
+  transition: opacity var(--duration-fast) ease;
+}
+
+.pathCard:hover .pathImage {
+  opacity: 0.9;
+}
+
+/* Cierre centrado con las dos acciones. */
+.closing {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  padding-block: var(--space-16) var(--space-24);
+  border-top: var(--border-hairline);
+  text-align: center;
+}
+
+.closingActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .collage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .collageRow {
+    display: flex;
+    gap: 6px;
+    height: clamp(16rem, 28vw, 30rem);
+  }
+
+  .collagePhoto {
+    flex-basis: 0;
+    min-width: 0;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .origin {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+  }
+
+  .valueGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pathGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .valueGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

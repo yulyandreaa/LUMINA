@@ -151,10 +151,11 @@
   }
 }
 
-@media (min-width: 1024px) {
+/* Tablet en adelante: foto y compra lado a lado (en tablet a partes iguales). */
+@media (min-width: 768px) {
   .layout {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    column-gap: var(--space-16);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--space-8);
   }
 
   .breadcrumb {
@@ -165,5 +166,12 @@
     position: sticky;
     top: calc(var(--header-height) + var(--space-6));
     align-self: start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    column-gap: var(--space-16);
   }
 }

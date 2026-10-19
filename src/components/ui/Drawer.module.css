@@ -24,6 +24,10 @@
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
+.drawer[data-size='wide'] {
+  width: min(46rem, 96vw);
+}
+
 .drawer[data-side='right'] {
   right: 0;
   transform: translateX(100%);

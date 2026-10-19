@@ -7,6 +7,7 @@ import { SearchPage } from './pages/SearchPage';
 import { ProductPage } from './pages/ProductPage';
 import { CartPage } from './pages/CartPage';
 import { InfoPage } from './pages/InfoPage';
+import { AboutPage } from './pages/AboutPage';
 import { EyeExamPage } from './pages/EyeExamPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
@@ -32,6 +33,9 @@ const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then((m) => ({ de
 const OrderResultPage = lazy(() => import('./pages/OrderResultPage').then((m) => ({ default: m.OrderResultPage })));
 /* Panel de administración: diferido (solo lo descarga el equipo). */
 const AdminRoot = lazy(() => import('./admin/AdminSession').then((m) => ({ default: m.AdminRoot })));
+const AdminNewProductPage = lazy(() =>
+  import('./pages/admin/AdminNewProductPage').then((m) => ({ default: m.AdminNewProductPage })),
+);
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout').then((m) => ({ default: m.AdminLayout })));
 const AdminAppointmentsPage = lazy(() =>
   import('./pages/admin/AdminAppointmentsPage').then((m) => ({ default: m.AdminAppointmentsPage })),
@@ -59,6 +63,7 @@ export default function App() {
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="pedido/resultado" element={<OrderResultPage />} />
 
+        <Route path="nosotros" element={<AboutPage />} />
         {infoPages.map((page) => (
           <Route key={page.slug} path={page.slug} element={<InfoPage page={page} />} />
         ))}
@@ -82,6 +87,7 @@ export default function App() {
             <Route path="pedidos" element={<AdminOrdersPage />} />
             <Route path="citas" element={<AdminAppointmentsPage />} />
             <Route path="productos" element={<AdminProductsPage />} />
+            <Route path="productos/nuevo" element={<AdminNewProductPage />} />
             <Route path="clientes" element={<AdminCustomersPage />} />
           </Route>
         </Route>

@@ -5,6 +5,7 @@
 
 .tile {
   position: relative;
+  container-type: inline-size;
   display: grid;
   place-items: center;
   aspect-ratio: 1 / 1;
@@ -50,8 +51,10 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  /* Se ajusta al ancho de la tarjeta para que "Gafas de sol" quepa en una línea también en tablet */
+  font-size: min(var(--text-2xl), 9cqi);
   font-weight: 700;
+  white-space: nowrap;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }

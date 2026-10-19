@@ -53,7 +53,7 @@ export function CartPage() {
             <Button to="/checkout" withArrow className={styles.checkout}>
               Finalizar compra
             </Button>
-            <p className={styles.note}>Precios de ejemplo (productos ficticios). Pagos en COP.</p>
+            <p className={styles.note}>Precios en pesos colombianos (COP), IVA incluido.</p>
           </aside>
         </div>
       )}

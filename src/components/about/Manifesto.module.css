@@ -1,0 +1,75 @@
+/* Manifiesto sobre marfil, con filetes finos entre líneas (sin foto: distinto a la cita del home). */
+.manifesto {
+  padding-block: var(--space-24);
+}
+
+.lines {
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: var(--border-hairline);
+}
+
+/* Móvil: número + frase arriba, nota debajo. Desde 1024px: número · frase · nota en una fila. */
+.line {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  column-gap: var(--space-4);
+  row-gap: var(--space-3);
+  align-items: baseline;
+  padding-block: var(--space-8);
+  border-bottom: var(--border-hairline);
+}
+
+.number {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-label);
+  color: var(--color-text-muted);
+}
+
+.text {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  color: color-mix(in srgb, var(--color-wine) 16%, var(--color-ivory));
+  transition: color 900ms var(--ease-out);
+}
+
+.note {
+  grid-column: 2;
+  max-width: 34ch;
+  color: var(--color-text-muted);
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity 900ms var(--ease-out),
+    transform 900ms var(--ease-out);
+}
+
+.line[data-lit='true'] .text {
+  color: var(--color-accent);
+}
+
+.line[data-lit='true'] .note {
+  opacity: 1;
+  transform: none;
+}
+
+@media (min-width: 1024px) {
+  .line {
+    grid-template-columns: 3rem 1fr minmax(14rem, 22rem);
+    column-gap: var(--space-8);
+    padding-block: var(--space-10);
+  }
+
+  .note {
+    grid-column: 3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text,
+  .note {
+    transition: none;
+  }
+}

@@ -12,11 +12,13 @@ interface DrawerProps {
   onClose: () => void;
   title: string;
   side?: 'left' | 'right';
+  /** wide: para editores con tablas (panel de administración). */
+  size?: 'default' | 'wide';
   children: ReactNode;
   footer?: ReactNode;
 }
 
-export function Drawer({ open, onClose, title, side = 'right', children, footer }: DrawerProps) {
+export function Drawer({ open, onClose, title, side = 'right', size = 'default', children, footer }: DrawerProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -40,6 +42,7 @@ export function Drawer({ open, onClose, title, side = 'right', children, footer 
         className={styles.drawer}
         data-open={open}
         data-side={side}
+        data-size={size}
         role="dialog"
         aria-modal="true"
         aria-label={title}

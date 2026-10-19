@@ -42,6 +42,10 @@
   gap: var(--space-3);
 }
 
+.links[hidden] {
+  display: none;
+}
+
 .links a,
 .legal a {
   transition: color var(--duration-fast);
@@ -65,6 +69,63 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-6);
+}
+
+/* — Celular: footer compacto — marca más pequeña y columnas plegables en lista — */
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-block: var(--space-10) var(--space-4);
+  }
+
+  .brand {
+    margin-bottom: var(--space-6);
+  }
+
+  .logo {
+    width: 7.5rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .quote {
+    max-width: none;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-md);
+  }
+
+  .column {
+    border-top: 1px solid color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  }
+
+  .column:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ivory) 14%, transparent);
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 3rem;
+    color: var(--color-powder);
+    font-family: var(--font-ui);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .links {
+    gap: var(--space-3);
+    padding-bottom: var(--space-5);
+    font-size: var(--text-sm);
+  }
+
+  .bottom {
+    gap: var(--space-3);
+    padding-block: var(--space-5);
+  }
 }
 
 @media (min-width: 768px) {

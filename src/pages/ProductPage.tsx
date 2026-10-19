@@ -130,7 +130,7 @@ function ProductView({ slug }: { slug: string }) {
               <FavoriteButton product={product} color={color} />
             </div>
             <p className={styles.price}>{formatPrice(product.price)}</p>
-            <p className={styles.tax}>Precio de ejemplo · Impuestos pendientes de definir</p>
+            <p className={styles.tax}>IVA incluido</p>
           </div>
 
           <div className={styles.field}>
@@ -174,7 +174,7 @@ function ProductView({ slug }: { slug: string }) {
                 ? `Agotado en ${color.name.toLowerCase()} · talla ${sizeGuide[size!].label.toLowerCase()}`
                 : 'Añadir a la cesta · Solo montura'}
             </Button>
-            <p className={styles.note}>LUMINA v1 vende monturas sin graduación.</p>
+            <p className={styles.note}>Por ahora vendemos solo la montura, sin lentes formulados.</p>
           </div>
 
           <Accordion

@@ -2,6 +2,7 @@ import { Suspense, type ReactNode } from 'react';
 import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAdminSession } from '../../admin/AdminSession';
 import { Eyebrow } from '../../components/ui/Eyebrow';
+import { useTabStrip } from '../../hooks/useTabStrip';
 import account from '../account/Account.module.css';
 import styles from './Admin.module.css';
 
@@ -22,6 +23,7 @@ export function AdminLayout() {
   const { email, signOut } = useAdminSession();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const navRef = useTabStrip<HTMLElement>();
 
   if (!email) return <Navigate to="/cuenta/ingresar" replace state={{ from: pathname }} />;
 
@@ -31,7 +33,7 @@ export function AdminLayout() {
         <Eyebrow>Administración</Eyebrow>
         <p className={account.hello}>Hola, equipo</p>
         <p className={account.muted}>{email}</p>
-        <nav className={account.nav} aria-label="Secciones del panel">
+        <nav ref={navRef} className={account.nav} aria-label="Secciones del panel">
           {sections.map((s) => (
             <NavLink
               key={s.to}
